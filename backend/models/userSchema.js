@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema({
-  fullname: {
+  fullName: {
     type: String,
     required: [true, "Name Required"],
   },
@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema({
       required: true,
     },
   },
-  porfolioURL: {
+  portfolioURL: {
     type: String,
     required: [true, "Portfolio URL is Required"],
   },
