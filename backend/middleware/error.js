@@ -10,7 +10,7 @@ export const errorMiddleware = (err, req, res, next) => {
   err.statuscode = err.statuscode || 500;
 
   if (err.code === 11000) {
-    const message = `Duplicate ${Object.keys(err.key)}Entered`;
+    const message = `Duplicate ${Object.keys(err.keyValue)}Entered`;
     err = new ErrorHandler(message, 400);
   }
   if (err.name === "jsonWebTokenError") {
@@ -27,7 +27,7 @@ export const errorMiddleware = (err, req, res, next) => {
     err = new ErrorHandler(message, 400);
   }
   const errorMessage = err.errors
-    ? Object.values(err.values)
+    ? Object.values(err.errors)
         .map((error) => error.message)
         .join(" ")
     : err.message;

@@ -1,7 +1,10 @@
 import { catchAsyncError } from "../middleware/catchAsyncError.js";
-import { ErrorHandler } from "../middleware/error.js";
+import ErrorHandler from "../middleware/error.js";
 import { User } from "../models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
+import crypto from "crypto";
+import { generateToken } from "../utils/jwtToken.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const register = catchAsyncError(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -50,7 +53,7 @@ export const register = catchAsyncError(async (req, res, next) => {
     LinkedInURL,
   } = req.body;
 
-  const user = await User.Create({
+  const user = await User.create({
     fullName,
     email,
     phone,
@@ -63,200 +66,207 @@ export const register = catchAsyncError(async (req, res, next) => {
     facebookURL,
     LinkedInURL,
     avatar: {
-      public_id: cloudinaryResponse.public_id,
-      url: cloudinaryResponse.secure_url,
+      public_id: cloudinaryResponseForAvatar.public_id, // Set your cloudinary public_id here
+      url: cloudinaryResponseForAvatar.secure_url, // Set your cloudinary secure_url here
     },
     resume: {
-      public_id: cloudinaryResponse.public_id,
-      url: cloudinaryResponse.secure_url,
+      public_id: cloudinaryResponseForResume.public_id, // Set your cloudinary public_id here
+      url: cloudinaryResponseForResume.secure_url, // Set your cloudinary secure_url here
     },
   });
-  generateToken(user, "Registered", 201, res);
-});
-
-export const login = catchAsyncError(async (req, res, next) => {
-  const { email, password } = req.body;
-  if ((!email, password)) {
-    return next(new ErrorHandler("provide Email And Password", 400));
-  }
-  const user = await User.findOne({ email }).select("+password");
-  if (!user) {
-    return next(new ErrorHandler("Invalid Email or password!", 404));
-  }
-  const isPasswordMatched = await user.conparePassword(password);
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("invalid Email of Password ", 404));
-  }
-  generateToken(user, "Login Successfully ", 200, res);
-});
-
-export const logout = catchAsyncError(async (req, res, next) => {
-  res
-    .status(200)
-    .cookie("token", "", {
-      httpOnly: true,
-      expires: new Date(Date.now()),
-    })
-    .json({
-      success: true,
-      message: "logged out!",
-    });
-});
-
-export const getUser = catchAsyncError(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
   res.status(200).json({
     success: true,
-    user,
+    message: "user register",
   });
+
+  // generateToken(user, "Registered", 201, res);
 });
 
-export const updatePorfile = catchAsyncError(async (req, res, next) => {
-  const newUserData = {
-    fullName: req.body.fullName,
-    email: req.body.email,
-    phone: req.body.phone,
-    aboutMe: req.body.aboutMe,
-    githubURL: req.body.githubURL,
-    instagramURL: req.body.instagramURL,
-    facebookURL: req.body.facebookURL,
-    XURL: req.body.XURL,
-    LinkedInURL: req.body.LinkedInURL,
-  };
-  if (req.files && req.files.avatar) {
-    const avatar = req.files.avatar;
-    const user = await User.findById(req.user.id);
-    const profileImageId = user.avatar.public_id;
-    await cloudinary.uploader.distroy(profileImageId);
-    const newPorfileImage = await cloudinary.uploader.upload(
-      avatar.tempFilePath,
-      {
-        folder: "PORTFOLIO AVATAR",
-      }
-    );
-    newUserData.avater = {
-      public_id: newPorfileImage.public_id,
-      url: newProfileImage.secure_url,
-    };
-  }
+// export const login = catchAsyncError(async (req, res, next) => {
+//   const { email, password } = req.body;
+//   if (!email || !password) {
+//     return next(new ErrorHandler("provide Email And Password", 400));
+//   }
+//   const user = await User.findOne({ email }).select("+password");
+//   if (!user) {
+//     return next(new ErrorHandler("Invalid Email or password!", 404));
+//   }
+//   const isPasswordMatched = await user.conparePassword(password);
+//   if (!isPasswordMatched) {
+//     return next(new ErrorHandler("invalid Email of Password ", 404));
+//   }
+//   generateToken(user, "Login Successfully ", 200, res);
+// });
 
-  if (req.file && req.file.resume) {
-    const resume = req.files.resume;
-    const user = await User.findById(req.user.id);
-    const resumeFileId = user.resume.public_id;
-    if (resumeFileId) {
-      await cloudinary.uploader.destroy(resumeFileId);
-    }
-    const newResume = await cloudinary.uploader.upload(reume.tempFilePath, {
-      folder: "PORTFOLIO RESUME",
-    });
-    newUserData.resume = {
-      public_id: newResume.public_id,
-      url: newResume.secure_url,
-    };
-  }
+// export const logout = catchAsyncError(async (req, res, next) => {
+//   res
+//     .status(200)
+//     .cookie("token", "", {
+//       httpOnly: true,
+//       expires: new Date(Date.now()),
+//     })
+//     .json({
+//       success: true,
+//       message: "logged out!",
+//     });
+// });
 
-  const user = await user.findByIdAndUpdate(req.user.id, newUserDate, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-  res.status(200).json({
-    success: true,
-    message: "Profile Updated!",
-    user,
-  });
-});
+// export const getUser = catchAsyncError(async (req, res, next) => {
+//   const user = await User.findById(req.user.id);
+//   res.status(200).json({
+//     success: true,
+//     user,
+//   });
+// });
 
-export const updatePassword = catchAsyncError(async (req, res, next) => {
-  const { currentPassword, newPassword, confirmPassword } = req.body;
-  const user = await User.findById(req.User.id).select("+password");
-  if (!currentPassword || !newPassword || !currentPassword) {
-    return next(new ErrorHandler("please provide all fields ", 400));
-  }
-  const isPasswordMatched = await user.comparePasword(currentPassword);
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("Incorrect Current Password"));
-  }
-  if (newPassword !== confirmPassword) {
-    return next(
-      new ErrorHandler("New password And Confirm New password Does not Match!")
-    );
-  }
-  user.password = newPassword;
-  await user.save();
-  res.status(200).json({
-    success: true,
-    message: "Password Updated!",
-  });
-});
+// export const updatePorfile = catchAsyncError(async (req, res, next) => {
+//   const newUserData = {
+//     fullName: req.body.fullName,
+//     email: req.body.email,
+//     phone: req.body.phone,
+//     aboutMe: req.body.aboutMe,
+//     githubURL: req.body.githubURL,
+//     instagramURL: req.body.instagramURL,
+//     facebookURL: req.body.facebookURL,
+//     XURL: req.body.XURL,
+//     LinkedInURL: req.body.LinkedInURL,
+//   };
+//   if (req.files && req.files.avatar) {
+//     const avatar = req.files.avatar;
+//     const user = await User.findById(req.user.id);
+//     const profileImageId = user.avatar.public_id;
+//     await cloudinary.uploader.distroy(profileImageId);
+//     const newPorfileImage = await cloudinary.uploader.upload(
+//       avatar.tempFilePath,
+//       {
+//         folder: "PORTFOLIO AVATAR",
+//       }
+//     );
+//     newUserData.avater = {
+//       public_id: newPorfileImage.public_id,
+//       url: newProfileImage.secure_url,
+//     };
+//   }
 
-export const getUserForPortfolio = catchAsyncError(async (req, res, next) => {
-  const id = "";
-  const user = await User.findById(id);
-  res.status(200).json({
-    success: true,
-    message: true,
-    user,
-  });
-});
+//   if (req.file && req.file.resume) {
+//     const resume = req.files.resume;
+//     const user = await User.findById(req.user.id);
+//     const resumeFileId = user.resume.public_id;
+//     if (resumeFileId) {
+//       await cloudinary.uploader.destroy(resumeFileId);
+//     }
+//     const newResume = await cloudinary.uploader.upload(reume.tempFilePath, {
+//       folder: "PORTFOLIO RESUME",
+//     });
+//     newUserData.resume = {
+//       public_id: newResume.public_id,
+//       url: newResume.secure_url,
+//     };
+//   }
 
-export const forgotPassword = catchAsyncError(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return next(new ErrorHandler("User Not Found!", 404));
-  }
-  const resetToken = user.getResetPasswordToken();
-  await user.save({ validateBeforeSave: false });
+//   const user = await user.findByIdAndUpdate(req.user.id, newUserDate, {
+//     new: true,
+//     runValidators: true,
+//     useFindAndModify: false,
+//   });
+//   res.status(200).json({
+//     success: true,
+//     message: "Profile Updated!",
+//     user,
+//   });
+// });
 
-  const resetPasswordUrl = `${process.env.DASHBORD_URL}/password/reset/${resetToken}`;
+// export const updatePassword = catchAsyncError(async (req, res, next) => {
+//   const { currentPassword, newPassword, confirmPassword } = req.body;
+//   const user = await User.findById(req.User.id).select("+password");
+//   if (!currentPassword || !newPassword || !currentPassword) {
+//     return next(new ErrorHandler("please provide all fields ", 400));
+//   }
+//   const isPasswordMatched = await user.comparePasword(currentPassword);
+//   if (!isPasswordMatched) {
+//     return next(new ErrorHandler("Incorrect Current Password"));
+//   }
+//   if (newPassword !== confirmPassword) {
+//     return next(
+//       new ErrorHandler("New password And Confirm New password Does not Match!")
+//     );
+//   }
+//   user.password = newPassword;
+//   await user.save();
+//   res.status(200).json({
+//     success: true,
+//     message: "Password Updated!",
+//   });
+// });
 
-  const message = `Your Reset Password Token is:-\n\n${resetPasswordUrl} \n\n
-   if You've not requested this email then, please inore it`;
+// export const getUserForPortfolio = catchAsyncError(async (req, res, next) => {
+//   const id = "";
+//   const user = await User.findById(id);
+//   res.status(200).json({
+//     success: true,
+//     message: true,
+//     user,
+//   });
+// });
 
-  try {
-    await sendEmail({
-      email: user.email,
-      subject: `personal PortFolio Dashboard Password Recovery`,
-      message,
-    });
-    res.status(201).json({
-      success: true,
-      message: `Email send To ${user.email} successfully`,
-    });
-  } catch (error) {
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new ErrorHandler(error.message, 500));
-  }
-});
+// export const forgotPassword = catchAsyncError(async (req, res, next) => {
+//   const user = await User.findOne({ email: req.body.email });
+//   if (!user) {
+//     return next(new ErrorHandler("User Not Found!", 404));
+//   }
+//   const resetToken = user.getResetPasswordToken();
+//   await user.save({ validateBeforeSave: false });
 
-export const resetPassword = catchAsyncError(async (req, res, next) => {
-  const { token } = req.params;
-  const resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(token)
-    .digest("hex");
-  const user = await User.findOne({
-    resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
-  });
-  if (!user) {
-    return next(
-      new ErrorHandler(
-        "reset password token id invalid or has been expired",
-        400
-      )
-    );
-  }
+//   const resetPasswordUrl = `${process.env.DASHBORD_URL}/password/reset/${resetToken}`;
 
-  if (req.body.password !== req.body.confirmPassword) {
-    return next(new ErrorHandler("password and confirm password do not match"));
-  }
-  user.password = await req.body.password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
+//   const message = `Your Reset Password Token is:-\n\n${resetPasswordUrl} \n\n
+//    if You've not requested this email then, please inore it`;
 
-  await user.save();
-});
+//   try {
+//     await sendEmail({
+//       email: user.email,
+//       subject: `personal PortFolio Dashboard Password Recovery`,
+//       message,
+//     });
+//     res.status(201).json({
+//       success: true,
+//       message: `Email send To ${user.email} successfully`,
+//     });
+//   } catch (error) {
+//     user.resetPasswordToken = undefined;
+//     user.resetPasswordExpire = undefined;
+//     await user.save({ validateBeforeSave: false });
+//     return next(new ErrorHandler(error.message, 500));
+//   }
+// });
+
+// export const resetPassword = catchAsyncError(async (req, res, next) => {
+//   const { token } = req.params;
+//   const resetPasswordToken = crypto
+//     .createHash("sha256")
+//     .update(token)
+//     .digest("hex");
+//   const user = await User.findOne({
+//     resetPasswordToken,
+//     resetPasswordExpire: { $gt: Date.now() },
+//   });
+//   if (!user) {
+//     return next(
+//       new ErrorHandler(
+//         "reset password token id invalid or has been expired",
+//         400
+//       )
+//     );
+//   }
+
+//   if (req.body.password !== req.body.confirmPassword) {
+//     return next(new ErrorHandler("password and confirm password do not match"));
+//   }
+//   user.password = await req.body.password;
+//   user.resetPasswordToken = undefined;
+//   user.resetPasswordExpire = undefined;
+
+//   await user.save();
+
+//   generateToken(user, "reset password successfully! ", 200, res);
+// });
