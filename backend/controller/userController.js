@@ -66,20 +66,16 @@ export const register = catchAsyncError(async (req, res, next) => {
     facebookURL,
     LinkedInURL,
     avatar: {
-      public_id: cloudinaryResponseForAvatar.public_id, // Set your cloudinary public_id here
-      url: cloudinaryResponseForAvatar.secure_url, // Set your cloudinary secure_url here
+      public_id: cloudinaryResponseForAvatar.public_id,
+      url: cloudinaryResponseForAvatar.secure_url,
     },
     resume: {
-      public_id: cloudinaryResponseForResume.public_id, // Set your cloudinary public_id here
-      url: cloudinaryResponseForResume.secure_url, // Set your cloudinary secure_url here
+      public_id: cloudinaryResponseForResume.public_id,
+      url: cloudinaryResponseForResume.secure_url,
     },
   });
-  res.status(200).json({
-    success: true,
-    message: "user register",
-  });
 
-  generateToken(user, "Registered", 201, res);
+  generateToken(user, " User Registered!", 201, res);
 });
 
 export const login = catchAsyncError(async (req, res, next) => {
@@ -91,7 +87,7 @@ export const login = catchAsyncError(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler("Invalid Email or password!", 404));
   }
-  const isPasswordMatched = await user.conparePassword(password);
+  const isPasswordMatched = await user.comparePassword(password);
   if (!isPasswordMatched) {
     return next(new ErrorHandler("invalid Email of Password ", 404));
   }
@@ -127,10 +123,12 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     aboutMe: req.body.aboutMe,
     githubURL: req.body.githubURL,
     instagramURL: req.body.instagramURL,
+    portfolioURL: req.body.portfolioURL,
     facebookURL: req.body.facebookURL,
     XURL: req.body.XURL,
     LinkedInURL: req.body.LinkedInURL,
   };
+
   if (req.files && req.files.avatar) {
     const avatar = req.files.avatar;
     const user = await User.findById(req.user.id);
@@ -139,10 +137,10 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     const newPorfileImage = await cloudinary.uploader.upload(
       avatar.tempFilePath,
       {
-        folder: "PORTFOLIO AVATAR",
+        folder: "AVATARS",
       }
     );
-    newUserData.avater = {
+    newUserData.avatar = {
       public_id: newPorfileImage.public_id,
       url: newProfileImage.secure_url,
     };
@@ -155,8 +153,8 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     if (resumeFileId) {
       await cloudinary.uploader.destroy(resumeFileId);
     }
-    const newResume = await cloudinary.uploader.upload(reume.tempFilePath, {
-      folder: "PORTFOLIO RESUME",
+    const newResume = await cloudinary.uploader.upload(resume.tempFilePath, {
+      folder: "My_RESUME",
     });
     newUserData.resume = {
       public_id: newResume.public_id,
@@ -164,7 +162,7 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     };
   }
 
-  const user = await user.findByIdAndUpdate(req.user.id, newUserDate, {
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
