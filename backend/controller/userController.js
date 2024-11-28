@@ -176,11 +176,11 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
 
 export const updatePassword = catchAsyncError(async (req, res, next) => {
   const { currentPassword, newPassword, confirmPassword } = req.body;
-  const user = await User.findById(req.User.id).select("+password");
+  const user = await User.findById(req.user.id).select("+password");
   if (!currentPassword || !newPassword || !currentPassword) {
     return next(new ErrorHandler("please provide all fields ", 400));
   }
-  const isPasswordMatched = await user.comparePasword(currentPassword);
+  const isPasswordMatched = await user.comparePassword(currentPassword);
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Incorrect Current Password"));
   }
