@@ -133,7 +133,7 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     const avatar = req.files.avatar;
     const user = await User.findById(req.user.id);
     const profileImageId = user.avatar.public_id;
-    await cloudinary.uploader.distroy(profileImageId);
+    await cloudinary.uploader.destroy(profileImageId);
     const newPorfileImage = await cloudinary.uploader.upload(
       avatar.tempFilePath,
       {
@@ -142,7 +142,7 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     );
     newUserData.avatar = {
       public_id: newPorfileImage.public_id,
-      url: newProfileImage.secure_url,
+      url: newPorfileImage.secure_url,
     };
   }
 
