@@ -32,7 +32,7 @@ const Profile = () => {
                   <Label>Resume</Label>
                   <Link
                     to={user && user.resume && user.resume.url}
-                    target="_blank"
+                    target="Resume"
                   >
                     <img
                       src={user && user.resume && user.resume.url}

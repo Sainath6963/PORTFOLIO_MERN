@@ -172,6 +172,7 @@ export const updatePassword =
       );
     }
   };
+
 export const updateProfile = (data) => async (dispatch) => {
   dispatch(userSlice.actions.updateProfileRequest());
   try {
