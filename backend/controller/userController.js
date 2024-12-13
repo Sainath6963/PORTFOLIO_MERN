@@ -122,7 +122,7 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     phone: req.body.phone,
     aboutMe: req.body.aboutMe,
     githubURL: req.body.githubURL,
-    instagramURL: req.body.instagramURL,
+    intagramURL: req.body.intagramURL,
     portfolioURL: req.body.portfolioURL,
     facebookURL: req.body.facebookURL,
     XURL: req.body.XURL,
@@ -146,7 +146,7 @@ export const updatePorfile = catchAsyncError(async (req, res, next) => {
     };
   }
 
-  if (req.file && req.file.resume) {
+  if (req.files && req.files.resume) {
     const resume = req.files.resume;
     const user = await User.findById(req.user.id);
     const resumeFileId = user.resume.public_id;

@@ -36,7 +36,7 @@ const Profile = () => {
                   >
                     <img
                       src={user && user.resume && user.resume.url}
-                      alt="avatar"
+                      alt="Resume"
                       className="w-full  h-auto sm:w-72 sm:h-72 rounded-2xl"
                     />
                   </Link>
@@ -68,15 +68,15 @@ const Profile = () => {
               </div>
               <div className="grid gap-2">
                 <Label>LinkedIn URL</Label>
-                <Input type="text" defaultValue={user.linkedInURL} disabled />
+                <Input type="text" defaultValue={user.LinkedInURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Instagram URL</Label>
-                <Input type="text" defaultValue={user.instagramURL} disabled />
+                <Input type="text" defaultValue={user.intagramURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Twitter(X) URL</Label>
-                <Input type="text" defaultValue={user.twitterURL} disabled />
+                <Input type="text" defaultValue={user.XURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Facebook URL</Label>

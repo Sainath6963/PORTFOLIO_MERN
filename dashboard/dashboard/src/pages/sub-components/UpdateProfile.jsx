@@ -24,17 +24,17 @@ const UpdateProfile = () => {
   const [phone, setPhone] = useState(user && user.phone);
   const [aboutMe, setAboutMe] = useState(user && user.aboutMe);
   const [portfolioURL, setPortfolioURL] = useState(user && user.portfolioURL);
-  const [linkedInURL, setLinkedInURL] = useState(
-    user && (user.linkedInURL === "undefined" ? "" : user.linkedInURL)
+  const [LinkedInURL, setLinkedInURL] = useState(
+    user && (user.LinkedInURL === "undefined" ? "" : user.LinkedInURL)
   );
   const [githubURL, setGithubURL] = useState(
     user && (user.githubURL === "undefined" ? "" : user.githubURL)
   );
-  const [instagramURL, setInstagramURL] = useState(
-    user && (user.instagramURL === "undefined" ? "" : user.instagramURL)
+  const [intagramURL, setintagramURL] = useState(
+    user && (user.intagramURL === "undefined" ? "" : user.intagramURL)
   );
-  const [twitterURL, setTwitterURL] = useState(
-    user && (user.twitterURL === "undefined" ? "" : user.twitterURL)
+  const [XURL, setXURL] = useState(
+    user && (user.XURL === "undefined" ? "" : user.XURL)
   );
   const [facebookURL, setFacebookURL] = useState(
     user && (user.facebookURL === "undefined" ? "" : user.facebookURL)
@@ -76,10 +76,10 @@ const UpdateProfile = () => {
     formData.append("phone", phone);
     formData.append("aboutMe", aboutMe);
     formData.append("portfolioURL", portfolioURL);
-    formData.append("linkedInURL", linkedInURL);
+    formData.append("LinkedInURL", LinkedInURL);
     formData.append("githubURL", githubURL);
-    formData.append("instagramURL", instagramURL);
-    formData.append("twitterURL", twitterURL);
+    formData.append("intagramURL", intagramURL);
+    formData.append("XURL", XURL);
     formData.append("facebookURL", facebookURL);
     formData.append("avatar", avatar);
     formData.append("resume", resume);
@@ -199,7 +199,7 @@ const UpdateProfile = () => {
                 <Input
                   type="text"
                   className="LinkedIn URL"
-                  value={linkedInURL}
+                  value={LinkedInURL}
                   onChange={(e) => setLinkedInURL(e.target.value)}
                 />
               </div>
@@ -217,8 +217,8 @@ const UpdateProfile = () => {
                 <Input
                   type="text"
                   className="Instagram URL"
-                  value={instagramURL}
-                  onChange={(e) => setInstagramURL(e.target.value)}
+                  value={intagramURL}
+                  onChange={(e) => setintagramURL(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -226,8 +226,8 @@ const UpdateProfile = () => {
                 <Input
                   type="text"
                   className="Twitter(X) URL"
-                  value={twitterURL}
-                  onChange={(e) => setTwitterURL(e.target.value)}
+                  value={XURL}
+                  onChange={(e) => setXURL(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
