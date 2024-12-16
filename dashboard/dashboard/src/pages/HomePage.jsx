@@ -24,14 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Dashboard from "./sub-components/Dashboard.jsx";
 import AddProject from "./sub-components/AddProject.jsx";
 import AddSkill from "./sub-components/AddSkill.jsx";
@@ -350,7 +343,7 @@ function HomePage() {
             case "Add Application":
               return <AddApplication />;
               break;
-            case "Add Timeline":
+            case "Add TimeLine":
               return <AddTimeline />;
               break;
             case "Messages":

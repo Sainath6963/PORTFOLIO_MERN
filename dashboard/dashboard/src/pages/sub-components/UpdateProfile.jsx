@@ -108,7 +108,7 @@ const UpdateProfile = () => {
             <div className="grid gap-2">
               <h1 className="text-3xl font-bold">Update Profile</h1>
               <p className="text-balance text-muted-foreground">
-                Update Your Profile Here
+                Update Your Profile
               </p>
             </div>
             <div className="grid gap-4">
@@ -116,15 +116,15 @@ const UpdateProfile = () => {
                 <div className="grid gap-2 w-full sm:w-72">
                   <Label>Profile Image</Label>
                   <img
-                    src={avatarPreview ? avatarPreview : "/avatarHolder.jpg"}
+                    src={avatarPreview ? avatarPreview : "./noprofile.jpg"}
                     alt="avatar"
                     className="w-full h-auto sm:w-72 sm:h-72 rounded-2xl"
                   />
                   <div className="relative">
-                    <input
+                    <Input
                       type="file"
                       onChange={avatarHandler}
-                      className="avatar-update-btn"
+                      className="avatar-update-btnblock w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none bg-blue-800"
                     />
                   </div>
                 </div>
@@ -135,16 +135,16 @@ const UpdateProfile = () => {
                     target="_blank"
                   >
                     <img
-                      src={resumePreview ? resumePreview : "/avatarHolder.jpg"}
+                      src={resumePreview ? resumePreview : "./noprofile.jpg"}
                       alt="avatar"
                       className="w-full  h-auto sm:w-72 sm:h-72 rounded-2xl"
                     />
                   </Link>
                   <div className="relative">
-                    <input
+                    <Input
                       type="file"
                       onChange={resumeHandler}
-                      className="avatar-update-btn"
+                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none bg-blue-800"
                     />
                   </div>
                 </div>
@@ -153,7 +153,7 @@ const UpdateProfile = () => {
                 <Label>Full Name</Label>
                 <Input
                   type="text"
-                  className="Your Full Name"
+                  placeholder="Your Full Name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
@@ -162,7 +162,7 @@ const UpdateProfile = () => {
                 <Label>Email</Label>
                 <Input
                   type="email"
-                  className="Your Email Address"
+                  placeholder="Your Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -171,7 +171,7 @@ const UpdateProfile = () => {
                 <Label>Phone</Label>
                 <Input
                   type="text"
-                  className="Phone Number"
+                  placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
@@ -179,7 +179,7 @@ const UpdateProfile = () => {
               <div className="grid gap-2">
                 <Label>About Me</Label>
                 <Textarea
-                  className="About Me"
+                  placeholder="About Me"
                   value={aboutMe}
                   onChange={(e) => setAboutMe(e.target.value)}
                 />
@@ -188,7 +188,7 @@ const UpdateProfile = () => {
                 <Label>Portfolio URL</Label>
                 <Input
                   type="text"
-                  className="Portfolio URL"
+                  placeholder="Portfolio URL"
                   value={portfolioURL}
                   onChange={(e) => setPortfolioURL(e.target.value)}
                 />
@@ -198,7 +198,7 @@ const UpdateProfile = () => {
                 <Label>LinkedIn URL</Label>
                 <Input
                   type="text"
-                  className="LinkedIn URL"
+                  placeholder="LinkedIn URL"
                   value={LinkedInURL}
                   onChange={(e) => setLinkedInURL(e.target.value)}
                 />
@@ -207,7 +207,7 @@ const UpdateProfile = () => {
                 <Label>Github URL</Label>
                 <Input
                   type="text"
-                  className="Github URL"
+                  placeholder="Github URL"
                   value={githubURL}
                   onChange={(e) => setGithubURL(e.target.value)}
                 />
@@ -216,7 +216,7 @@ const UpdateProfile = () => {
                 <Label>Instagram URL</Label>
                 <Input
                   type="text"
-                  className="Instagram URL"
+                  placeholder="Instagram URL"
                   value={intagramURL}
                   onChange={(e) => setintagramURL(e.target.value)}
                 />
@@ -225,7 +225,7 @@ const UpdateProfile = () => {
                 <Label>Twitter(X) URL</Label>
                 <Input
                   type="text"
-                  className="Twitter(X) URL"
+                  placeholder="Twitter(X) URL"
                   value={XURL}
                   onChange={(e) => setXURL(e.target.value)}
                 />
@@ -234,7 +234,7 @@ const UpdateProfile = () => {
                 <Label>Facebook URL</Label>
                 <Input
                   type="text"
-                  className="Facebook URL"
+                  placeholder="Facebook URL"
                   value={facebookURL}
                   onChange={(e) => setFacebookURL(e.target.value)}
                 />
