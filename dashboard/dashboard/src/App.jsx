@@ -16,12 +16,14 @@ import { getUser } from "./store/slices/userSlice";
 import "./App.css";
 import { getAllMessages } from "./store/slices/messagesSlice";
 import { getAllTimeline } from "./store/slices/timelineSlice";
+import { getAllSkills } from "./store/slices/skillSlice";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(getAllSkills());
     dispatch(getAllMessages());
     dispatch(getAllTimeline());
   });

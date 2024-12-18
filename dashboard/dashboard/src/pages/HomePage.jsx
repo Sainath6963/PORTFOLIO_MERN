@@ -84,17 +84,17 @@ function HomePage() {
                 <TooltipTrigger asChild>
                   <Link
                     className={`flex h-9 w-9 items-center justify-center  rounded-lg ${
-                      active === "Add Project"
+                      active === "AddProject"
                         ? "text-accent-foreground bg-accent"
                         : "text-muted-foreground"
                     } transition-colors hover:text-foreground md:h-8 md:w-8`}
-                    onClick={() => setActive("Add Project")}
+                    onClick={() => setActive("AddProject")}
                   >
                     <FolderGit className="h-5 w-5" />
-                    <span className="sr-only">Add Project</span>
+                    <span className="sr-only">AddProject</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Add Project</TooltipContent>
+                <TooltipContent side="right">AddProject</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider>
@@ -102,17 +102,17 @@ function HomePage() {
                 <TooltipTrigger asChild>
                   <Link
                     className={`flex h-9 w-9 items-center justify-center  rounded-lg ${
-                      active === "Add Skills"
+                      active === "AddSkill"
                         ? "text-accent-foreground bg-accent"
                         : "text-muted-foreground"
                     } transition-colors hover:text-foreground md:h-8 md:w-8`}
-                    onClick={() => setActive("Add Skills")}
+                    onClick={() => setActive("AddSkill")}
                   >
                     <PencilRuler className="h-5 w-5" />
-                    <span className="sr-only">Add Skills</span>
+                    <span className="sr-only">AddSkill</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Add Skills</TooltipContent>
+                <TooltipContent side="right">AddSkill</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider>
@@ -120,17 +120,17 @@ function HomePage() {
                 <TooltipTrigger asChild>
                   <Link
                     className={`flex h-9 w-9 items-center justify-center  rounded-lg ${
-                      active === "Add Application"
+                      active === "AddApplication"
                         ? "text-accent-foreground bg-accent"
                         : "text-muted-foreground"
                     } transition-colors hover:text-foreground md:h-8 md:w-8`}
-                    onClick={() => setActive("Add Application")}
+                    onClick={() => setActive("AddApplication")}
                   >
                     <LayoutGrid className="h-5 w-5" />
-                    <span className="sr-only">Add Application</span>
+                    <span className="sr-only">AddApplication</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Add Application</TooltipContent>
+                <TooltipContent side="right">AddApplication</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider>
@@ -138,17 +138,17 @@ function HomePage() {
                 <TooltipTrigger asChild>
                   <Link
                     className={`flex h-9 w-9 items-center justify-center  rounded-lg ${
-                      active === "Add TimeLine"
+                      active === "AddTimeline"
                         ? "text-accent-foreground bg-accent"
                         : "text-muted-foreground"
                     } transition-colors hover:text-foreground md:h-8 md:w-8`}
-                    onClick={() => setActive("Add TimeLine")}
+                    onClick={() => setActive("AddTimeline")}
                   >
                     <History className="h-5 w-5" />
-                    <span className="sr-only">Add TimeLine</span>
+                    <span className="sr-only">AddTimeline</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right">Add TimeLine</TooltipContent>
+                <TooltipContent side="right">AddTimeline</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider>
@@ -239,38 +239,38 @@ function HomePage() {
                 <Link
                   href="#"
                   className={`flex items-center gap-4 px-2.5 ${
-                    active === "Add Project"
+                    active === "AddProject"
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   } `}
-                  onClick={() => setActive("Add Project")}
+                  onClick={() => setActive("AddProject")}
                 >
                   <FolderGit className="h-5 w-5" />
-                  Add Project
+                  AddProject
                 </Link>
                 <Link
                   href="#"
                   className={`flex items-center gap-4 px-2.5 ${
-                    active === "Add Skill"
+                    active === "AddSkill"
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   } `}
-                  onClick={() => setActive("Add Skill")}
+                  onClick={() => setActive("AddSkill")}
                 >
                   <PencilRuler className="h-5 w-5" />
-                  Add Skill
+                  AddSkill
                 </Link>
                 <Link
                   href="#"
                   className={`flex items-center gap-4 px-2.5 ${
-                    active === "Add Application"
+                    active === "AddApplication"
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   } `}
-                  onClick={() => setActive("Add Application")}
+                  onClick={() => setActive("AddApplication")}
                 >
                   <LayoutGrid className="h-5 w-5" />
-                  Add Application
+                  AddApplication
                 </Link>
                 <Link
                   href="#"
@@ -287,14 +287,14 @@ function HomePage() {
                 <Link
                   href="#"
                   className={`flex items-center gap-4 px-2.5 ${
-                    active === "Add Timeline"
+                    active === "AddTimeline"
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   } `}
-                  onClick={() => setActive("Add Timeline")}
+                  onClick={() => setActive("AddTimeline")}
                 >
                   <History className="h-5 w-5" />
-                  Add Timeline
+                  AddTimeline
                 </Link>
                 <Link
                   href="#"
@@ -334,16 +334,16 @@ function HomePage() {
             case "Dashboard":
               return <Dashboard />;
               break;
-            case "Add Project":
+            case "AddProject":
               return <AddProject />;
               break;
-            case "Add Skill":
+            case "AddSkill":
               return <AddSkill />;
               break;
-            case "Add Application":
+            case "AddApplication":
               return <AddApplication />;
               break;
-            case "Add TimeLine":
+            case "AddTimeline":
               return <AddTimeline />;
               break;
             case "Messages":
