@@ -138,7 +138,6 @@ export const deleteProject = (id) => async (dispatch) => {
 
 export const updateProject = (id, newData) => async (dispatch) => {
   dispatch(projectSlice.actions.updateProjectRequest());
-
   try {
     const response = await axios.put(
       `http://localhost:4000/api/v1/projects/update/${id}`,
@@ -151,8 +150,9 @@ export const updateProject = (id, newData) => async (dispatch) => {
     dispatch(projectSlice.actions.updateProjectSuccess(response.data.message));
     dispatch(projectSlice.actions.clearAllErrors());
   } catch (error) {
+    console.log(error);
     dispatch(
-      projectSlice.actions.addNewProjectFailed(error.response.data.message)
+      projectSlice.actions.updateProjectFailed(error.response.data.message)
     );
   }
 };

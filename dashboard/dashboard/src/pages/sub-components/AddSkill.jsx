@@ -19,7 +19,7 @@ const AddSkill = () => {
   const [svgPreview, setSvgPreview] = useState("");
 
   const handleSvg = (e) => {
-    const file = e.traget.file[0];
+    const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {

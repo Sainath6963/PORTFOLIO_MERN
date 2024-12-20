@@ -124,7 +124,7 @@ export const updateSkill = (id, proficiency) => async (dispatch) => {
   try {
     const { data } = await axios.put(
       `http://localhost:4000/api/v1/Skill/update/${id}`,
-      proficiency,
+      { proficiency },
       { withCredentials: true, headers: { "Content-Type": "application/json" } }
     );
     dispatch(skillSlice.actions.updateSkillSuccess(data.message));
@@ -137,10 +137,13 @@ export const updateSkill = (id, proficiency) => async (dispatch) => {
 export const deleteSkill = (id) => async (dispatch) => {
   dispatch(skillSlice.actions.deleteSkillRequest());
   try {
-    const response = await axios.delete("", {
-      withCredentials: true,
-    });
-    dispatch(skillSlice.actions.deleteSkillSuccess(data.message));
+    const response = await axios.delete(
+      `http://localhost:4000/api/v1/Skill/delete/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(skillSlice.actions.deleteSkillSuccess(response.data.message));
     dispatch(skillSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(skillSlice.actions.deleteSkillFailed(error.response.data.message));
