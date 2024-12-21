@@ -1,5 +1,5 @@
 import { catchAsyncError } from "../middleware/catchAsyncError.js";
-import ErrorHandler, { errorMiddleware } from "../middleware/error.js";
+import ErrorHandler from "../middleware/error.js";
 import { v2 as cloudinary } from "cloudinary";
 import { Skill } from "../models/skillsSchema.js";
 

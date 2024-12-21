@@ -110,7 +110,7 @@ function ManageProjects() {
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <Link to={`/view/project/${element.id}`}>
+                                    <Link to={`/view/project/${element._id}`}>
                                       <Button
                                         className="border-green-600 border-2 rounded-full h-8 w-8 flex 
                                       justify-center items-center text-green-600  hover:text-slate-950 
@@ -128,7 +128,7 @@ function ManageProjects() {
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <Link to={`/update/project/${element.id}`}>
+                                    <Link to={`/update/project/${element._id}`}>
                                       <button className="border-yellow-400 border-2 rounded-full h-8 w-8 flex justify-center items-center text-yellow-400  hover:text-slate-950 hover:bg-yellow-400">
                                         <Pen className="h-5 w-5" />
                                       </button>
