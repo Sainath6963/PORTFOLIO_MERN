@@ -8,6 +8,7 @@ import {
   Instagram,
   Linkedin,
   Twitter,
+  X,
   Youtube,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -63,20 +64,26 @@ const Hero = () => {
         className="w-fit px-5 py-2 bg-slate-50 rounded-[20px] flex gap-5 
       items-center mt-4 md:mt-8 lg:mt-10"
       >
-        <Link to={"https://www.youtube.com/@CodeWithZeeshu"} target="_blank">
+        <Link to={"https://www.youtube.com/@SainathBalkawade"} target="_blank">
           <Youtube className="text-red-500 w-7 h-7" />
         </Link>
-        <Link to={user.instagramURL} target="_blank">
+        <Link
+          to={
+            "https://www.instagram.com/sb9codes/profilecard/?igsh=em4yc3JuZm9pdWt1"
+          }
+          target="_blank"
+        >
           <Instagram className="text-pink-500 w-7 h-7" />
         </Link>
-        <Link to={user.facebookURL} target="_blank">
-          <Facebook className="text-blue-800 w-7 h-7" />
-        </Link>
-        <Link to={user.linkedInURL} target="_blank">
+
+        <Link
+          to={"https://www.linkedin.com/in/sainath-balkawade-b3053a186"}
+          target="_blank"
+        >
           <Linkedin className="text-sky-500 w-7 h-7" />
         </Link>
-        <Link to={user.twitterURL} target="_blank">
-          <Twitter className="text-blue-800 w-7 h-7" />
+        <Link to={"https://x.com/sainath6963"} target="_blank">
+          <X className="text-blue-800 w-7 h-7" />
         </Link>
       </div>
       <div className="mt-4 md:mt-8 lg:mt-10  flex gap-3">

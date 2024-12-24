@@ -19,9 +19,12 @@ const ViewProject = () => {
   useEffect(() => {
     const getProject = async () => {
       await axios
-        .get(`http://localhost:4000/api/v1/projects/getSingle/${id}`, {
-          withCredentials: true,
-        })
+        .get(
+          `https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/projects/getSingle/${id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           console.log(res);
 
