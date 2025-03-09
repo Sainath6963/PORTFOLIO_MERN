@@ -3,20 +3,22 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema({
   senderName: {
     type: String,
-    minLength: [2, "Name must contain at least 2 characters!"],
+    required: [true, "Sender name is required!"], // ✅ Now required
+    minLength: [2, "Name must contain at least 2 characters!"], // ✅ Fixed grammar
   },
   subject: {
     type: String,
-    minLength: [2, "Subject must contain at least 2 character!"],
+    required: [true, "Subject is required!"], // ✅ Now required
+    minLength: [2, "Subject must contain at least 2 characters!"], // ✅ Fixed grammar
   },
   message: {
     type: String,
-    minLength: [2, "Message must contain at least 2 character!"],
+    required: [true, "Message cannot be empty!"], // ✅ Now required
+    minLength: [2, "Message must contain at least 2 characters!"], // ✅ Fixed grammar
   },
-
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now, // ✅ Removed parentheses for correct behavior
   },
 });
 

@@ -52,7 +52,7 @@ export const forgotPassword = (email) => async (dispatch) => {
   dispatch(forgotResetPassSlice.actions.forgotPasswordRequest());
   try {
     const { data } = await axios.post(
-      "https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/user/forgotPassword",
+      "http://localhost:4000/api/v1/user/forgotPassword",
       { email },
       { withCredentials: true, headers: { "Content-Type": "application/json" } }
     );
@@ -71,7 +71,7 @@ export const resetPassword =
     dispatch(forgotResetPassSlice.actions.resetPasswordRequest());
     try {
       const { data } = await axios.put(
-        `https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/user/password/reset/${token}`,
+        `http://localhost:4000/api/v1/user/password/reset/${token}`,
         { password, confirmPassword },
         {
           withCredentials: true,

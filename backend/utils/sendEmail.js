@@ -1,21 +1,29 @@
 import nodeMailer from "nodemailer";
 
 export const sendEmail = async (options) => {
-  const transporter = nodeMailer.createTransport({
-    host: process.env.SMPT_HOST,
-    port: process.env.SMPT_PORT,
-    service: process.env.SMPT_SERVICE,
-    auth: {
-      user: process.env.SMPT_MAIL,
-      pass: process.env.SMPT_PASSWORD,
-    },
-  });
+  try {
+    const transporter = nodeMailer.createTransport({
+      host: process.env.SMTP_HOST, // Corrected typo
+      port: Number(process.env.SMTP_PORT) || 587, // Ensure it's a number, default to 587
+      secure: process.env.SMTP_PORT == "465", // Use secure mode if port is 465
+      auth: {
+        user: process.env.SMTP_MAIL,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
 
-  const mailOption = {
-    from: process.env.SMPT_MAIL,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  };
-  await transporter.sendMail(mailOption);
+    const mailOptions = {
+      from: `"Your App Name" <${process.env.SMTP_MAIL}>`, // Adds a sender name
+      to: options.email,
+      subject: options.subject,
+      text: options.message,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully: ", info.messageId);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+    throw new Error("Email could not be sent.");
+  }
 };

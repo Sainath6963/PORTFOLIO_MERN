@@ -11,9 +11,10 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Email Required"],
+    unique: true, // ✅ Ensures email uniqueness
   },
   phone: {
-    type: Number,
+    type: String, // ✅ Changed from Number to String to prevent data loss
     required: [true, "Phone Number Required"],
   },
   aboutMe: {
@@ -24,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Password Field is Required"],
     minLength: [8, "Password must contain at least 8 characters"],
-    select: false,
+    select: false, // ✅ Ensures password is not returned in queries
   },
   avatar: {
     public_id: {
@@ -51,7 +52,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Portfolio URL is Required"],
   },
   githubURL: String,
-  intagramURL: String,
+  instagramURL: String, // ✅ Fixed typo
   facebookURL: String,
   XURL: String,
   LinkedInURL: String,
@@ -59,31 +60,32 @@ const UserSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
 });
 
+// Hash password before saving
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-UserSchema.methods.comparePassword = async function (enterPassword) {
-  return await bcrypt.compare(enterPassword, this.password);
+// Compare password
+UserSchema.methods.comparePassword = function (enteredPassword) {
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
+// Generate JWT Token
 UserSchema.methods.generateJsonWebToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+  return jwt.sign({ id: this._id.toString() }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
+// Generate and hash reset password token
 UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
   this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
-  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes expiry
   return resetToken;
 };
 

@@ -15,7 +15,7 @@ const Contact = () => {
     setLoading(true);
     await axios
       .post(
-        "https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/message/send",
+        "http://localhost:4000/api/v1/message/send",
         { senderName, subject, message },
         {
           withCredentials: true,

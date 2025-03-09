@@ -1,18 +1,24 @@
 import mongoose from "mongoose";
 
-const softwareApplicationSchema = new mongoose.Schema({
-  name: String,
-  svg: {
-    public_id: {
+const softwareApplicationSchema = new mongoose.Schema(
+  {
+    name: {
       type: String,
-      required: true,
+      required: [true, "Software application name is required"], // ✅ Now required
     },
-    url: {
-      type: String,
-      required: true,
+    svg: {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
     },
   },
-});
+  { timestamps: true } // ✅ Added timestamps
+);
 
 export const SoftwareApplication = mongoose.model(
   "SoftwareApplication",

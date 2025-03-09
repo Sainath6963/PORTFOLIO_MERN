@@ -72,7 +72,7 @@ export const getAllTimeline = () => async (dispatch) => {
   dispatch(timelineSlice.actions.getAllTimelineRequest());
   try {
     const { data } = await axios.get(
-      "https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/timeline/getAll",
+      "http://localhost:4000/api/v1/timeline/getAll",
       { withCredentials: true }
     );
     dispatch(timelineSlice.actions.getAllTimelineSuccess(data.timelines));
@@ -88,7 +88,7 @@ export const addNewTimeline = (timelineData) => async (dispatch) => {
   dispatch(timelineSlice.actions.addNewTimelineRequest());
   try {
     const { data } = await axios.post(
-      "https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/timeline/add",
+      "http://localhost:4000/api/v1/timeline/add",
       timelineData,
       {
         withCredentials: true,
@@ -107,7 +107,7 @@ export const deleteTimeline = (id) => async (dispatch) => {
   dispatch(timelineSlice.actions.deleteTimelineRequest());
   try {
     const { data } = await axios.delete(
-      `https://mern-stack-portfolio-backend-jcei.onrender.com/api/v1/timeline/deleteTimeline/${id}`,
+      `http://localhost:4000/api/v1/timeline/deleteTimeline/${id}`,
       {
         withCredentials: true,
       }
