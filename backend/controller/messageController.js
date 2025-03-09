@@ -1,6 +1,6 @@
 import { catchAsyncError } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/error.js";
-import { Message } from "../models/messageSchema.js"; // Fixed import typo
+import { Message } from "../models/mesageSchema.js"; // Fixed import typo
 
 // Send a new message
 export const sendMessage = catchAsyncError(async (req, res, next) => {
