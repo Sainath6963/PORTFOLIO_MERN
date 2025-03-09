@@ -131,7 +131,9 @@ const Dashboard = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardFooter>
-                  <Button>Visit Portfolio</Button>
+                  <Link to={"http://localhost:5173/"}>
+                    <Button>Visit Portfolio</Button>
+                  </Link>
                 </CardFooter>
               </Card>
               <Card className="flex flex-col justify-center">
