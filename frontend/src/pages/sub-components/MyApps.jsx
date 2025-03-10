@@ -7,7 +7,7 @@ const MyApps = () => {
   useEffect(() => {
     const getMyApps = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/softwareApplications/getallApplications",
+        "https://render-backend-qy70.onrender.com/api/v1/softwareApplications/getallApplications",
         { withCredentials: true }
       );
       setApps(data.softwareApplications);

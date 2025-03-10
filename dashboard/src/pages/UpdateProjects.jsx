@@ -50,9 +50,12 @@ function UpdateProjects() {
   useEffect(() => {
     const getProject = async () => {
       await axios
-        .get(`http://localhost:4000/api/v1/projects/getSingle/${id}`, {
-          withCredentials: true,
-        })
+        .get(
+          `https://render-backend-qy70.onrender.com/api/v1/projects/getSingle/${id}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           setTitle(res.data.project.title);
           setDescription(res.data.project.description);

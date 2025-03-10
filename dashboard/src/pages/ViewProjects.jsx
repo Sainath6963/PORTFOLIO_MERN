@@ -13,7 +13,7 @@ const ViewProject = () => {
     const getProject = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/v1/projects/getSingle/${id}`,
+          `https://render-backend-qy70.onrender.com/api/v1/projects/getSingle/${id}`,
           { withCredentials: true }
         );
         setProject(res.data.project);
