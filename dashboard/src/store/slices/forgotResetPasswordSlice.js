@@ -8,7 +8,6 @@ const forgotResetPassSlice = createSlice({
     error: null,
     message: null,
   },
-
   reducers: {
     forgotPasswordRequest(state, action) {
       state.loading = true;
@@ -40,7 +39,6 @@ const forgotResetPassSlice = createSlice({
       state.error = action.payload;
       state.message = null;
     },
-
     clearAllErrors(state, action) {
       state.error = null;
       state = state;
@@ -49,16 +47,20 @@ const forgotResetPassSlice = createSlice({
 });
 
 export const forgotPassword = (email) => async (dispatch) => {
-  dispatch(forgotResetPassSlice.actions.forgotPasswordRequest());
   try {
-    const { data } = await axios.post(
-      "https://render-backend-qy70.onrender.com/api/v1/user/forgotPassword",
+    dispatch(forgotResetPassSlice.actions.forgotPasswordRequest());
+    console.log(email);
+    const response = await axios.post(
+      "https://render-backend-qy70.onrender.com/api/v1/user/password/forgot",
       { email },
       { withCredentials: true, headers: { "Content-Type": "application/json" } }
     );
-    dispatch(forgotResetPassSlice.actions.forgotPasswordSuccess(data.message));
-    dispatch(forgotResetPassSlice.actions.clearAllErrors());
+    console.log(response);
+    dispatch(
+      forgotResetPassSlice.actions.forgotPasswordSuccess(response.data.message)
+    );
   } catch (error) {
+    console.log(error);
     dispatch(
       forgotResetPassSlice.actions.forgotPasswordFailed(
         error.response.data.message
@@ -66,21 +68,25 @@ export const forgotPassword = (email) => async (dispatch) => {
     );
   }
 };
+
 export const resetPassword =
   (token, password, confirmPassword) => async (dispatch) => {
-    dispatch(forgotResetPassSlice.actions.resetPasswordRequest());
     try {
-      const { data } = await axios.put(
-        `https://render-backend-qy70.onrender.com/api/v1/user/password/reset/${token}`,
+      dispatch(forgotResetPassSlice.actions.resetPasswordRequest());
+      const response = await axios.put(
+        ` https://render-backend-qy70.onrender.com/api/v1/user/password/reset/${token}`,
         { password, confirmPassword },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
-      dispatch(forgotResetPassSlice.actions.resetPasswordSuccess(data.message));
-      dispatch(forgotResetPassSlice.actions.clearAllErrors());
+      console.log(response);
+      dispatch(
+        forgotResetPassSlice.actions.resetPasswordSuccess(response.data.message)
+      );
     } catch (error) {
+      console.log(error);
       dispatch(
         forgotResetPassSlice.actions.resetPasswordFailed(
           error.response.data.message
@@ -89,7 +95,7 @@ export const resetPassword =
     }
   };
 
-export const clearAllForgotPasswordErrors = () => (dispatch) => {
+export const clearAllForgotResetPassErrors = () => (dispatch) => {
   dispatch(forgotResetPassSlice.actions.clearAllErrors());
 };
 

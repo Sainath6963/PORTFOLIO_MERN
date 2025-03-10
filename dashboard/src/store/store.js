@@ -1,20 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slices/userSlice.js";
-import forgotResetPasswordReduser from "./slices/forgotResetPasswordSlice.js";
-import messageReducer from "./slices/messagesSlice.js";
+import userReducer from "./slices/userSlice";
+import forgotPasswordReducer from "./slices/forgotResetPasswordSlice";
+import skillReducer from "./slices/skillSlice";
+import projectReducer from "./slices/projectSlice";
 import timelineReducer from "./slices/timelineSlice";
-import skillReduser from "./slices/skillSlice.js";
-import softareApplicationReduser from "./slices/softwareApplicationSlice.js";
-import projectReduser from "./slices/projectSlice.js";
+import softwareApplicationReducer from "./slices/softwareApplicationSlice";
+import messageReducer from "./slices/messagesSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    forgotpassword: forgotResetPasswordReduser,
-    messages: messageReducer,
+    forgotPassword: forgotPasswordReducer,
+    skill: skillReducer,
+    project: projectReducer,
     timeline: timelineReducer,
-    skill: skillReduser,
-    softwareApplications: softareApplicationReduser,
-    Projects: projectReduser,
+    softwareApplications: softwareApplicationReducer,
+    messages: messageReducer,
   },
 });

@@ -11,28 +11,26 @@ import {
   getAllTimeline,
   resetTimelineSlice,
 } from "@/store/slices/timelineSlice";
-import { Label } from "@/components/ui/label";
 
 const AddTimeline = () => {
   const [title, setTitle] = useState("");
-  const [discription, setdiscription] = useState("");
+  const [description, setDescription] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
   const { loading, error, message } = useSelector((state) => state.timeline);
 
-  const dispatch = useDispatch();
-
   const handleAddNewTimeline = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("discription", discription);
+    formData.append("description", description);
     formData.append("from", from);
     formData.append("to", to);
     dispatch(addNewTimeline(formData));
   };
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -59,9 +57,9 @@ const AddTimeline = () => {
               </h2>
               <div className="mt-10 flex flex-col gap-5">
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Title
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <input
@@ -75,24 +73,24 @@ const AddTimeline = () => {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
-                    discription
-                  </Label>
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
+                    Description
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Textarea
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="discription"
-                        value={discription}
-                        onChange={(e) => setdiscription(e.target.value)}
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Starting Point (From)
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Input
@@ -106,9 +104,9 @@ const AddTimeline = () => {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Ending Point (To)
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <input
@@ -129,7 +127,7 @@ const AddTimeline = () => {
             {!loading ? (
               <Button
                 type="submit"
-                onClick={() => handleAddNewTimeline()}
+                onClick={() => handleAddNewSkill()}
                 className="w-full"
               >
                 Add Timeline

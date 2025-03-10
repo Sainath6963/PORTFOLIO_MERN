@@ -1,37 +1,36 @@
-import React, { useEffect } from "react";
+import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage.jsx";
-import Login from "./pages/Login.jsx";
-import ForgotPassword from "./pages/ForgotPassword";
-import ManageSkills from "./pages/ManageSkills";
-import ManageTimeLine from "./pages/ManageTimeLine";
-import ManageProjects from "./pages/ManageProjects";
-import ViewProjects from "./pages/ViewProjects";
-import UpdateProjects from "./pages/UpdateProjects.jsx";
-import ResetPassword from "./pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Login from "./pages/Login";
+import HomePage from "./pages/HomePage";
+import ManageSkills from "./pages/ManageSkills";
+import ManageProjects from "./pages/ManageProjects";
+import UpdateProject from "./pages/UpdateProjects";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { getUser } from "./store/slices/userSlice";
-import "./App.css";
-import { getAllMessages } from "./store/slices/messagesSlice";
-import { getAllTimeline } from "./store/slices/timelineSlice";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import { getAllSkills } from "./store/slices/skillSlice";
 import { getAllSoftwareApplications } from "./store/slices/softwareApplicationSlice";
-import { getAllProject } from "./store/slices/projectSlice";
+import { getAllTimeline } from "./store/slices/timelineSlice";
+import { getAllMessages } from "./store/slices/messagesSlice";
+import ManageTimeline from "./pages/ManageTimeline";
+import { getAllProjects } from "./store/slices/projectSlice";
+import ViewProject from "./pages/ViewProjects";
 
-const App = () => {
+function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser());
     dispatch(getAllSkills());
-    dispatch(getAllMessages());
-    dispatch(getAllTimeline());
     dispatch(getAllSoftwareApplications());
-    dispatch(getAllProject());
-  }, [dispatch]);
-
+    dispatch(getAllTimeline());
+    dispatch(getAllMessages());
+    dispatch(getAllProjects());
+  }, []);
   return (
     <Router>
       <Routes>
@@ -40,14 +39,14 @@ const App = () => {
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
         <Route path="/manage/skills" element={<ManageSkills />} />
-        <Route path="/manage/timeline" element={<ManageTimeLine />} />
+        <Route path="/manage/timeline" element={<ManageTimeline />} />
         <Route path="/manage/projects" element={<ManageProjects />} />
-        <Route path="/view/project/:id" element={<ViewProjects />} />
-        <Route path="/update/project/:id" element={<UpdateProjects />} />
+        <Route path="/view/project/:id" element={<ViewProject />} />
+        <Route path="/update/project/:id" element={<UpdateProject />} />
       </Routes>
       <ToastContainer position="bottom-right" theme="dark" />
     </Router>
   );
-};
+}
 
 export default App;

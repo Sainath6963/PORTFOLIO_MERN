@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -9,28 +10,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { Trash2 } from "lucide-react";
 import {
+  clearAllTimelineErrors,
   deleteTimeline,
   getAllTimeline,
   resetTimelineSlice,
 } from "@/store/slices/timelineSlice";
-import { Trash2 } from "lucide-react";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
-function ManageTimeLine() {
+const ManageTimeline = () => {
   const navigateTo = useNavigate();
-
   const handleReturnToDashboard = () => {
     navigateTo("/");
   };
-
   const { loading, timeline, error, message } = useSelector(
     (state) => state.timeline
   );
-
   const dispatch = useDispatch();
 
   const handleDeleteTimeline = (id) => {
@@ -48,6 +46,7 @@ function ManageTimeLine() {
       dispatch(getAllTimeline());
     }
   }, [dispatch, loading, error]);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Tabs defaultValue="week">
@@ -88,13 +87,13 @@ function ManageTimeLine() {
                             {element.timeline.to ? element.timeline.to : "____"}
                           </TableCell>
                           <TableCell className="flex justify-end">
-                            <Button
+                            <button
                               className="border-red-600 border-2 rounded-full h-8 w-8 flex 
                               justify-center items-center text-red-600  hover:text-slate-50 hover:bg-red-600"
                               onClick={() => handleDeleteTimeline(element._id)}
                             >
                               <Trash2 className="h-5 w-5" />
-                            </Button>
+                            </button>
                           </TableCell>
                         </TableRow>
                       );
@@ -112,6 +111,6 @@ function ManageTimeLine() {
       </Tabs>
     </div>
   );
-}
+};
 
-export default ManageTimeLine;
+export default ManageTimeline;

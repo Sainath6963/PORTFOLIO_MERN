@@ -18,70 +18,62 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { clearAllProjectErrors } from "@/store/slices/projectSlice";
 import { clearAllSkillErrors } from "@/store/slices/skillSlice";
 import {
-  clearAllSoftwareAppError,
+  clearAllSoftwareAppErrors,
   deleteSoftwareApplication,
   getAllSoftwareApplications,
   resetSoftwareApplicationSlice,
 } from "@/store/slices/softwareApplicationSlice";
-import { clearAllTimelineErrors } from "@/store/slices/timelineSlice";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SpecialLoadingButton from "./SpecialLoadingButton";
-
+import { clearAllTimelineErrors } from "@/store/slices/timelineSlice";
+import { clearAllProjectErrors } from "@/store/slices/projectSlice";
 const Dashboard = () => {
   const navigateTo = useNavigate();
   const gotoMangeSkills = () => {
     navigateTo("/manage/skills");
   };
-
   const gotoMangeTimeline = () => {
     navigateTo("/manage/timeline");
   };
-
   const gotoMangeProjects = () => {
     navigateTo("/manage/projects");
   };
 
   const { user } = useSelector((state) => state.user);
-
   const {
     skills,
     loading: skillLoading,
     error: skillError,
     message: skillMessage,
   } = useSelector((state) => state.skill);
-
   const {
     softwareApplications,
     loading: appLoading,
     error: appError,
     message: appMessage,
   } = useSelector((state) => state.softwareApplications);
-
   const {
     timeline,
     loading: timelineLoading,
     error: timelineError,
     message: timelineMessage,
   } = useSelector((state) => state.timeline);
-
   const { projects, error: projectError } = useSelector(
-    (state) => state.Projects
+    (state) => state.project
   );
 
   const [appId, setAppId] = useState(null);
-  const dispatch = useDispatch();
-
   const handleDeleteSoftwareApp = (id) => {
     setAppId(id);
     dispatch(deleteSoftwareApplication(id));
   };
 
+  const dispatch = useDispatch();
   useEffect(() => {
     if (skillError) {
       toast.error(skillError);
@@ -89,7 +81,7 @@ const Dashboard = () => {
     }
     if (appError) {
       toast.error(appError);
-      dispatch(clearAllSoftwareAppError());
+      dispatch(clearAllSoftwareAppErrors());
     }
     if (projectError) {
       toast.error(projectError);
@@ -131,9 +123,7 @@ const Dashboard = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardFooter>
-                  <Link to={"http://localhost:5173/"}>
-                    <Button>Visit Portfolio</Button>
-                  </Link>
+                  <Button>Visit Portfolio</Button>
                 </CardFooter>
               </Card>
               <Card className="flex flex-col justify-center">

@@ -11,35 +11,35 @@ const projectSlice = createSlice({
     singleProject: {},
   },
   reducers: {
-    getAllProjectRequest(state, action) {
+    getAllProjectsRequest(state, action) {
       state.projects = [];
       state.error = null;
       state.loading = true;
     },
-    getAllProjectSuccess(state, action) {
+    getAllProjectsSuccess(state, action) {
       state.projects = action.payload;
       state.error = null;
       state.loading = false;
     },
-    getAllProjectFailed(state, action) {
+    getAllProjectsFailed(state, action) {
       state.projects = state.projects;
-      state.error = state.payload;
+      state.error = action.payload;
       state.loading = false;
     },
     addNewProjectRequest(state, action) {
       state.loading = true;
-      state.message = null;
       state.error = null;
+      state.message = null;
     },
     addNewProjectSuccess(state, action) {
+      state.error = null;
       state.loading = false;
       state.message = action.payload;
-      state.error = null;
     },
     addNewProjectFailed(state, action) {
       state.error = action.payload;
-      state.message = null;
       state.loading = false;
+      state.message = null;
     },
     deleteProjectRequest(state, action) {
       state.loading = true;
@@ -48,8 +48,8 @@ const projectSlice = createSlice({
     },
     deleteProjectSuccess(state, action) {
       state.error = null;
-      state.message = action.payload;
       state.loading = false;
+      state.message = action.payload;
     },
     deleteProjectFailed(state, action) {
       state.error = action.payload;
@@ -63,12 +63,12 @@ const projectSlice = createSlice({
     },
     updateProjectSuccess(state, action) {
       state.loading = false;
-      state.error = null;
       state.message = action.payload;
+      state.error = null;
     },
     updateProjectFailed(state, action) {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
       state.message = null;
     },
     resetProjectSlice(state, action) {
@@ -77,35 +77,37 @@ const projectSlice = createSlice({
       state.message = null;
       state.loading = false;
     },
-    clearAllErrors(state, error) {
+    clearAllErrors(state, action) {
       state.error = null;
-      state.projects = state.projects;
+      state = state.projects;
     },
   },
 });
 
-export const getAllProject = () => async (dispatch) => {
-  dispatch(projectSlice.actions.getAllProjectRequest());
+export const getAllProjects = () => async (dispatch) => {
+  dispatch(projectSlice.actions.getAllProjectsRequest());
   try {
     const response = await axios.get(
-      "https://render-backend-qy70.onrender.com/api/v1/projects/getAll",
-      {
-        withCredentials: true,
-      }
+      "https://render-backend-qy70.onrender.com/api/v1/project/getall",
+      { withCredentials: true }
     );
-    dispatch(projectSlice.actions.getAllProjectSuccess(response.data.projects));
+    dispatch(
+      projectSlice.actions.getAllProjectsSuccess(response.data.projects)
+    );
     dispatch(projectSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(projectSlice.actions.getAllProjectFailed(error.response));
+    dispatch(
+      projectSlice.actions.getAllProjectsFailed(error.response.data.message)
+    );
   }
 };
 
-export const addNewProject = (projectData) => async (dispatch) => {
+export const addNewProject = (data) => async (dispatch) => {
   dispatch(projectSlice.actions.addNewProjectRequest());
   try {
     const response = await axios.post(
-      "https://render-backend-qy70.onrender.com/api/v1/projects/add",
-      projectData,
+      "https://render-backend-qy70.onrender.com/api/v1/project/add",
+      data,
       {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
@@ -119,15 +121,16 @@ export const addNewProject = (projectData) => async (dispatch) => {
     );
   }
 };
-
 export const deleteProject = (id) => async (dispatch) => {
   dispatch(projectSlice.actions.deleteProjectRequest());
   try {
     const response = await axios.delete(
-      `https://render-backend-qy70.onrender.com/api/v1/projects/delete/${id}`,
-      { withCredentials: true }
+      `https://render-backend-qy70.onrender.com/api/v1/project/delete/${id}`,
+      {
+        withCredentials: true,
+      }
     );
-    dispatch(projectSlice.actions.deleteProjectSuccess());
+    dispatch(projectSlice.actions.deleteProjectSuccess(response.data.message));
     dispatch(projectSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(
@@ -135,12 +138,11 @@ export const deleteProject = (id) => async (dispatch) => {
     );
   }
 };
-
 export const updateProject = (id, newData) => async (dispatch) => {
   dispatch(projectSlice.actions.updateProjectRequest());
   try {
     const response = await axios.put(
-      `https://render-backend-qy70.onrender.com/api/v1/projects/update/${id}`,
+      `https://render-backend-qy70.onrender.com/api/v1/project/update/${id}`,
       newData,
       {
         withCredentials: true,

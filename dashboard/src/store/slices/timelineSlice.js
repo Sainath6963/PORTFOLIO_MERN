@@ -71,11 +71,13 @@ const timelineSlice = createSlice({
 export const getAllTimeline = () => async (dispatch) => {
   dispatch(timelineSlice.actions.getAllTimelineRequest());
   try {
-    const { data } = await axios.get(
-      "https://render-backend-qy70.onrender.com/api/v1/timeline/getAll",
+    const response = await axios.get(
+      "https://render-backend-qy70.onrender.com/api/v1/timeline/getall",
       { withCredentials: true }
     );
-    dispatch(timelineSlice.actions.getAllTimelineSuccess(data.timelines));
+    dispatch(
+      timelineSlice.actions.getAllTimelineSuccess(response.data.timelines)
+    );
     dispatch(timelineSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(
@@ -84,18 +86,20 @@ export const getAllTimeline = () => async (dispatch) => {
   }
 };
 
-export const addNewTimeline = (timelineData) => async (dispatch) => {
+export const addNewTimeline = (data) => async (dispatch) => {
   dispatch(timelineSlice.actions.addNewTimelineRequest());
   try {
-    const { data } = await axios.post(
+    const response = await axios.post(
       "https://render-backend-qy70.onrender.com/api/v1/timeline/add",
-      timelineData,
+      data,
       {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       }
     );
-    dispatch(timelineSlice.actions.addNewTimelineSuccess(data.message));
+    dispatch(
+      timelineSlice.actions.addNewTimelineSuccess(response.data.message)
+    );
     dispatch(timelineSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(
@@ -106,13 +110,15 @@ export const addNewTimeline = (timelineData) => async (dispatch) => {
 export const deleteTimeline = (id) => async (dispatch) => {
   dispatch(timelineSlice.actions.deleteTimelineRequest());
   try {
-    const { data } = await axios.delete(
-      `https://render-backend-qy70.onrender.com/api/v1/timeline/deleteTimeline/${id}`,
+    const response = await axios.delete(
+      `https://render-backend-qy70.onrender.com/api/v1/timeline/delete/${id}`,
       {
         withCredentials: true,
       }
     );
-    dispatch(timelineSlice.actions.deleteTimelineSuccess(data.message));
+    dispatch(
+      timelineSlice.actions.deleteTimelineSuccess(response.data.message)
+    );
     dispatch(timelineSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(

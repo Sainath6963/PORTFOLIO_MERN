@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import Profile from "./Profile";
 import UpdateProfile from "./UpdateProfile";
 import UpdatePassword from "./UpdatePassword";

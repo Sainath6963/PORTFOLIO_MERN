@@ -21,7 +21,7 @@ const messageSlice = createSlice({
       state.loading = false;
     },
     getAllMessagesFailed(state, action) {
-      state.messages = state.message;
+      state.messages = state.messages;
       state.error = action.payload;
       state.loading = false;
     },

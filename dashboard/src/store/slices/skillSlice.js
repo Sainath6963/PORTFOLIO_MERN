@@ -10,7 +10,7 @@ const skillSlice = createSlice({
     message: null,
   },
   reducers: {
-    getAllSkillRequest(state, action) {
+    getAllSkillsRequest(state, action) {
       state.skills = [];
       state.error = null;
       state.loading = true;
@@ -20,7 +20,7 @@ const skillSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
-    getAllSkillFailed(state, action) {
+    getAllSkillsFailed(state, action) {
       state.skills = state.skills;
       state.error = action.payload;
       state.loading = false;
@@ -57,8 +57,8 @@ const skillSlice = createSlice({
     },
     updateSkillRequest(state, action) {
       state.loading = true;
-      state.message = null;
       state.error = null;
+      state.message = null;
     },
     updateSkillSuccess(state, action) {
       state.loading = false;
@@ -66,8 +66,8 @@ const skillSlice = createSlice({
       state.error = null;
     },
     updateSkillFailed(state, action) {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
       state.message = null;
     },
     resetSkillSlice(state, action) {
@@ -84,18 +84,18 @@ const skillSlice = createSlice({
 });
 
 export const getAllSkills = () => async (dispatch) => {
-  dispatch(skillSlice.actions.getAllSkillRequest());
+  dispatch(skillSlice.actions.getAllSkillsRequest());
   try {
-    const { data } = await axios.get(
-      "https://render-backend-qy70.onrender.com/api/v1/Skill/getAll",
-      {
-        withCredentials: true,
-      }
+    const response = await axios.get(
+      "https://render-backend-qy70.onrender.com/api/v1/skill/getall",
+      { withCredentials: true }
     );
-    dispatch(skillSlice.actions.getAllSkillsSuccess(data.skills));
+    dispatch(skillSlice.actions.getAllSkillsSuccess(response.data.skills));
     dispatch(skillSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(skillSlice.actions.getAllSkillFailed(error.response.data.message));
+    dispatch(
+      skillSlice.actions.getAllSkillsFailed(error.response.data.message)
+    );
   }
 };
 
@@ -103,7 +103,7 @@ export const addNewSkill = (data) => async (dispatch) => {
   dispatch(skillSlice.actions.addNewSkillRequest());
   try {
     const response = await axios.post(
-      "https://render-backend-qy70.onrender.com/api/v1/Skill/add",
+      "https://render-backend-qy70.onrender.com/api/v1/skill/add",
       data,
       {
         withCredentials: true,
@@ -122,12 +122,15 @@ export const addNewSkill = (data) => async (dispatch) => {
 export const updateSkill = (id, proficiency) => async (dispatch) => {
   dispatch(skillSlice.actions.updateSkillRequest());
   try {
-    const { data } = await axios.put(
-      `https://render-backend-qy70.onrender.com/api/v1/Skill/update/${id}`,
+    const response = await axios.put(
+      `https://render-backend-qy70.onrender.com/api/v1/skill/update/${id}`,
       { proficiency },
-      { withCredentials: true, headers: { "Content-Type": "application/json" } }
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
     );
-    dispatch(skillSlice.actions.updateSkillSuccess(data.message));
+    dispatch(skillSlice.actions.updateSkillSuccess(response.data.message));
     dispatch(skillSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(skillSlice.actions.updateSkillFailed(error.response.data.message));
@@ -138,7 +141,7 @@ export const deleteSkill = (id) => async (dispatch) => {
   dispatch(skillSlice.actions.deleteSkillRequest());
   try {
     const response = await axios.delete(
-      `https://render-backend-qy70.onrender.com/api/v1/Skill/delete/${id}`,
+      `https://render-backend-qy70.onrender.com/api/v1/skill/delete/${id}`,
       {
         withCredentials: true,
       }

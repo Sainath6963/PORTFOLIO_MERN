@@ -32,11 +32,11 @@ const Profile = () => {
                   <Label>Resume</Label>
                   <Link
                     to={user && user.resume && user.resume.url}
-                    target="Resume"
+                    target="_blank"
                   >
                     <img
                       src={user && user.resume && user.resume.url}
-                      alt="Resume"
+                      alt="avatar"
                       className="w-full  h-auto sm:w-72 sm:h-72 rounded-2xl"
                     />
                   </Link>
@@ -68,15 +68,15 @@ const Profile = () => {
               </div>
               <div className="grid gap-2">
                 <Label>LinkedIn URL</Label>
-                <Input type="text" defaultValue={user.LinkedInURL} disabled />
+                <Input type="text" defaultValue={user.linkedInURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Instagram URL</Label>
-                <Input type="text" defaultValue={user.intagramURL} disabled />
+                <Input type="text" defaultValue={user.instagramURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Twitter(X) URL</Label>
-                <Input type="text" defaultValue={user.XURL} disabled />
+                <Input type="text" defaultValue={user.twitterURL} disabled />
               </div>
               <div className="grid gap-2">
                 <Label>Facebook URL</Label>
@@ -89,4 +89,5 @@ const Profile = () => {
     </>
   );
 };
+
 export default Profile;

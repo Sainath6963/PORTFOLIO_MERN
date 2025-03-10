@@ -1,9 +1,10 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 const SpecialLoadingButton = ({ content, width }) => {
   return (
     <>
-      <button disabled type="button" className={width ? `${width}` : "w-full"}>
+      <Button disabled type="button" className={width ? `${width}` : "w-full"}>
         <svg
           aria-hidden="true"
           role="status"
@@ -22,7 +23,7 @@ const SpecialLoadingButton = ({ content, width }) => {
           />
         </svg>
         {content}...
-      </button>
+      </Button>
     </>
   );
 };

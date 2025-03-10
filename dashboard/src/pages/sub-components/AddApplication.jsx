@@ -5,7 +5,7 @@ import SpecialLoadingButton from "./SpecialLoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewSoftwareApplication,
-  clearAllSoftwareAppError,
+  clearAllSoftwareAppErrors,
   getAllSoftwareApplications,
   resetSoftwareApplicationSlice,
 } from "@/store/slices/softwareApplicationSlice";
@@ -43,7 +43,7 @@ const AddApplication = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllSoftwareAppError());
+      dispatch(clearAllSoftwareAppErrors());
     }
     if (message) {
       toast.success(message);

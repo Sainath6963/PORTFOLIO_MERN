@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAllUserError, login } from "@/store/slices/userSlice";
+import { useEffect, useState } from "react";
+import { clearAllUserErrors, login } from "@/store/slices/userSlice";
 import { toast } from "react-toastify";
 import SpecialLoadingButton from "./sub-components/SpecialLoadingButton";
 
@@ -25,55 +17,47 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleLogin = () => {
     dispatch(login(email, password));
   };
 
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllUserError()); // Fixed missing ()
+      dispatch(clearAllUserErrors());
     }
     if (isAuthenticated) {
-      toast.success("Login");
       navigateTo("/");
     }
   }, [dispatch, isAuthenticated, error, loading]);
+
   return (
-    <Card className="bg-gray-100 flex items-center justify-center min-h-screen">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-gray-800 mb-6">
-            Login
-          </CardTitle>
-          <CardDescription className="block text-gray-700 font-medium mb-2">
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="w-full lg:grid lg:min-h-[100vh] lg:grid-cols-2 xl:min-h-[100vh]">
+      <div className=" min-h-[100vh] flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="text-balance text-muted-foreground">
+              Enter your email below to login to your account
+            </p>
+          </div>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Email
-              </Label>
+              <Label htmlFor="email">Email</Label>
               <Input
+                id="email"
                 type="email"
                 placeholder="m@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label>Password</Label>
                 <Link
-                  to={"/password/forgot"}
+                  to="/password/forgot"
                   className="ml-auto inline-block text-sm underline"
                 >
                   Forgot your password?
@@ -83,21 +67,25 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               />
             </div>
             {loading ? (
               <SpecialLoadingButton content={"Loggin In"} />
             ) : (
-              <Button type="submit" className="w-full" onClick={handleLogin}>
+              <Button
+                onClick={() => handleLogin(email, password)}
+                className="w-full"
+              >
                 Login
               </Button>
             )}
           </div>
-        </CardContent>
+        </div>
       </div>
-    </Card>
+      <div className="flex justify-center items-center bg-muted">
+        <img src="/login.png" alt="login" />
+      </div>
+    </div>
   );
 };
 

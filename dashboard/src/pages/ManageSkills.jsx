@@ -1,14 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -16,28 +7,36 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import {
   clearAllSkillErrors,
+  updateSkill,
+  resetSkillSlice,
   deleteSkill,
   getAllSkills,
-  resetSkillSlice,
-  updateSkill,
 } from "@/store/slices/skillSlice";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Trash2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
-function ManageSkills() {
+const ManageSkills = () => {
   const navigateTo = useNavigate();
   const handleReturnToDashboard = () => {
     navigateTo("/");
   };
-
-  const dispatch = useDispatch();
   const { loading, skills, error, message } = useSelector(
     (state) => state.skill
   );
+  const dispatch = useDispatch();
 
   const [newProficiency, setNewProficiency] = useState(1);
   const handleInputChange = (proficiency) => {
@@ -113,6 +112,6 @@ function ManageSkills() {
       </Tabs>
     </div>
   );
-}
+};
 
 export default ManageSkills;

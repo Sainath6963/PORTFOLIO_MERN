@@ -1,43 +1,36 @@
-import React, { useEffect, useState } from "react";
-import SpecialLoadingButton from "./sub-components/SpecialLoadingButton";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import {
-  clearAllForgotPasswordErrors,
   resetPassword,
+  clearAllForgotResetPassErrors,
 } from "@/store/slices/forgotResetPasswordSlice";
-import { toast } from "react-toastify";
 import { getUser } from "@/store/slices/userSlice";
+import SpecialLoadingButton from "./sub-components/SpecialLoadingButton";
+import { toast } from "react-toastify";
 
-const ResetPassword = () => {
+const Login = () => {
   const { token } = useParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { loading, error, message } = useSelector(
-    (state) => state.forgotpassword
+    (state) => state.forgotPassword
   );
   const { isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
 
-  const handleResettPassword = () => {
+  const handleResetPassword = (password, confirmPassword) => {
     dispatch(resetPassword(token, password, confirmPassword));
   };
 
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllForgotPasswordErrors());
+      dispatch(clearAllForgotResetPassErrors());
     }
     if (isAuthenticated) {
       navigateTo("/");
@@ -47,70 +40,54 @@ const ResetPassword = () => {
       dispatch(getUser());
     }
   }, [dispatch, isAuthenticated, error, loading]);
-  return (
-    <>
-      <Card className="bg-gray-100 flex items-center justify-center min-h-screen">
-        <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-gray-800 mb-6">
-              Reset Password
-            </CardTitle>
-            <CardDescription className="block text-gray-700 font-medium mb-2">
-              Set A New Password
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label
-                  htmlFor="password"
-                  className="block text-gray-700 font-medium mb-2"
-                >
-                  Password
-                </Label>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label
-                  htmlFor="Confirm Password"
-                  className="block text-gray-700 font-medium mb-2"
-                >
-                  Confirm Password
-                </Label>
-                <Input
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                />
-              </div>
 
-              {loading ? (
-                <SpecialLoadingButton content={"Resetting Password"} />
-              ) : (
-                <Button
-                  type="submit"
-                  className="w-full"
-                  onClick={handleResettPassword}
-                >
-                  Reset password
-                </Button>
-              )}
+  return (
+    <div className="w-full lg:grid lg:min-h-[100vh] lg:grid-cols-2 xl:min-h-[100vh]">
+      <div className=" min-h-[100vh] flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Reset Password</h1>
+            <p className="text-balance text-muted-foreground">
+              Set a new password
+            </p>
+          </div>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
-          </CardContent>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Confirm Password</Label>
+              </div>
+              <Input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            {!loading ? (
+              <Button
+                onClick={() => handleResetPassword(password, confirmPassword)}
+                className="w-full"
+              >
+                Reset Password
+              </Button>
+            ) : (
+              <SpecialLoadingButton content={"Resetting Your Password"} />
+            )}
+          </div>
         </div>
-      </Card>
-    </>
+      </div>
+      <div className="flex justify-center items-center bg-muted">
+        <img src="/reset.png" alt="login" />
+      </div>
+    </div>
   );
 };
 
-export default ResetPassword;
+export default Login;

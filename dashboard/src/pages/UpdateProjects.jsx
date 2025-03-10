@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -9,20 +7,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import SpecialLoadingButton from "./sub-components/SpecialLoadingButton";
+import { Link } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import axios from "axios";
+import SpecialLoadingButton from "./sub-components/SpecialLoadingButton";
 import {
   clearAllProjectErrors,
-  getAllProject,
+  getAllProjects,
   resetProjectSlice,
   updateProject,
 } from "@/store/slices/projectSlice";
-import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 
-function UpdateProjects() {
+const UpdateProject = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [technologies, setTechnologies] = useState("");
@@ -33,7 +32,7 @@ function UpdateProjects() {
   const [projectBanner, setProjectBanner] = useState("");
   const [projectBannerPreview, setProjectBannerPreview] = useState("");
 
-  const { error, message, loading } = useSelector((state) => state.Projects);
+  const { error, message, loading } = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -51,7 +50,7 @@ function UpdateProjects() {
     const getProject = async () => {
       await axios
         .get(
-          `https://render-backend-qy70.onrender.com/api/v1/projects/getSingle/${id}`,
+          `https://mern-stack-portfolio-backend-code.onrender.com/api/v1/project/get/${id}`,
           {
             withCredentials: true,
           }
@@ -84,7 +83,7 @@ function UpdateProjects() {
     if (message) {
       toast.success(message);
       dispatch(resetProjectSlice());
-      dispatch(getAllProject());
+      dispatch(getAllProjects());
     }
   }, [id, message, error]);
 
@@ -160,9 +159,9 @@ function UpdateProjects() {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Description
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Textarea
@@ -174,9 +173,9 @@ function UpdateProjects() {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Technologies Uses In This Project
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Textarea
@@ -188,9 +187,9 @@ function UpdateProjects() {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Stack
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Select
@@ -214,9 +213,9 @@ function UpdateProjects() {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Deployed
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                       <Select
@@ -238,12 +237,12 @@ function UpdateProjects() {
                 </div>
 
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Github Repository Link
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="relative flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
-                      <Input
+                      <input
                         type="text"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Github Repository Link"
@@ -255,12 +254,12 @@ function UpdateProjects() {
                   </div>
                 </div>
                 <div className="w-full sm:col-span-4">
-                  <Label className="block text-sm font-medium leading-6 text-gray-900">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
                     Project Link
-                  </Label>
+                  </label>
                   <div className="mt-2">
                     <div className="relative flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
-                      <Input
+                      <input
                         type="text"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Github Repository Link"
@@ -279,18 +278,18 @@ function UpdateProjects() {
             {loading ? (
               <SpecialLoadingButton content={"Updating"} width={"w-52"} />
             ) : (
-              <Button
+              <button
                 type="submit"
                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-52"
               >
                 Update
-              </Button>
+              </button>
             )}
           </div>
         </form>
       </div>
     </>
   );
-}
+};
 
-export default UpdateProjects;
+export default UpdateProject;

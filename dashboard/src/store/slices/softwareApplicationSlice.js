@@ -10,35 +10,34 @@ const softwareApplicationSlice = createSlice({
     message: null,
   },
   reducers: {
-    getAllSoftwareApplicationsRequest(state, action) {
+    getAllsoftwareApplicationsRequest(state, action) {
       state.softwareApplications = [];
       state.error = null;
       state.loading = true;
     },
-    getAllSoftwareApplicationsSuccess(state, action) {
+    getAllsoftwareApplicationsSuccess(state, action) {
       state.softwareApplications = action.payload;
       state.error = null;
       state.loading = false;
     },
-    getAllSoftwareApplicationsFailed(state, action) {
+    getAllsoftwareApplicationsFailed(state, action) {
       state.softwareApplications = state.softwareApplications;
       state.error = action.payload;
       state.loading = false;
     },
-    addNewsoftwareApplicationRequest(state, action) {
+    addNewsoftwareApplicationsRequest(state, action) {
       state.loading = true;
       state.error = null;
       state.message = null;
     },
-    addNewsoftwareApplicationSuccess(state, action) {
-      state.loading = false;
+    addNewsoftwareApplicationsSuccess(state, action) {
       state.error = null;
+      state.loading = false;
       state.message = action.payload;
     },
-
-    addNewsoftwareApplicationFailed(state, action) {
-      state.loading = false;
+    addNewsoftwareApplicationsFailed(state, action) {
       state.error = action.payload;
+      state.loading = false;
       state.message = null;
     },
     deletesoftwareApplicationsRequest(state, action) {
@@ -47,16 +46,15 @@ const softwareApplicationSlice = createSlice({
       state.message = null;
     },
     deletesoftwareApplicationsSuccess(state, action) {
-      state.loading = false;
       state.error = null;
+      state.loading = false;
       state.message = action.payload;
     },
     deletesoftwareApplicationsFailed(state, action) {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
       state.message = null;
     },
-
     resetSoftwareApplicationSlice(state, action) {
       state.error = null;
       state.softwareApplications = state.softwareApplications;
@@ -72,22 +70,22 @@ const softwareApplicationSlice = createSlice({
 
 export const getAllSoftwareApplications = () => async (dispatch) => {
   dispatch(
-    softwareApplicationSlice.actions.getAllSoftwareApplicationsRequest()
+    softwareApplicationSlice.actions.getAllsoftwareApplicationsRequest()
   );
   try {
     const response = await axios.get(
-      "https://render-backend-qy70.onrender.com/api/v1/softwareApplications/getallApplications",
+      "https://render-backend-qy70.onrender.com/api/v1/softwareapplication/getall",
       { withCredentials: true }
     );
     dispatch(
-      softwareApplicationSlice.actions.getAllSoftwareApplicationsSuccess(
+      softwareApplicationSlice.actions.getAllsoftwareApplicationsSuccess(
         response.data.softwareApplications
       )
     );
     dispatch(softwareApplicationSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(
-      softwareApplicationSlice.actions.getAllSoftwareApplicationsFailed(
+      softwareApplicationSlice.actions.getAllsoftwareApplicationsFailed(
         error.response.data.message
       )
     );
@@ -95,10 +93,12 @@ export const getAllSoftwareApplications = () => async (dispatch) => {
 };
 
 export const addNewSoftwareApplication = (data) => async (dispatch) => {
-  dispatch(softwareApplicationSlice.actions.addNewsoftwareApplicationRequest());
+  dispatch(
+    softwareApplicationSlice.actions.addNewsoftwareApplicationsRequest()
+  );
   try {
     const response = await axios.post(
-      "https://render-backend-qy70.onrender.com/api/v1/softwareApplications/addApplications",
+      "https://render-backend-qy70.onrender.com/api/v1/softwareapplication/add",
       data,
       {
         withCredentials: true,
@@ -106,14 +106,14 @@ export const addNewSoftwareApplication = (data) => async (dispatch) => {
       }
     );
     dispatch(
-      softwareApplicationSlice.actions.addNewsoftwareApplicationSuccess(
+      softwareApplicationSlice.actions.addNewsoftwareApplicationsSuccess(
         response.data.message
       )
     );
     dispatch(softwareApplicationSlice.actions.clearAllErrors());
   } catch (error) {
     dispatch(
-      softwareApplicationSlice.actions.addNewsoftwareApplicationFailed(
+      softwareApplicationSlice.actions.addNewsoftwareApplicationsFailed(
         error.response.data.message
       )
     );
@@ -126,8 +126,10 @@ export const deleteSoftwareApplication = (id) => async (dispatch) => {
   );
   try {
     const response = await axios.delete(
-      `https://render-backend-qy70.onrender.com/api/v1/softwareApplications/deleteApplications/${id}`,
-      { withCredentials: true }
+      `https://render-backend-qy70.onrender.com/api/v1/softwareapplication/delete/${id}`,
+      {
+        withCredentials: true,
+      }
     );
     dispatch(
       softwareApplicationSlice.actions.deletesoftwareApplicationsSuccess(
@@ -144,7 +146,7 @@ export const deleteSoftwareApplication = (id) => async (dispatch) => {
   }
 };
 
-export const clearAllSoftwareAppError = () => (dispatch) => {
+export const clearAllSoftwareAppErrors = () => (dispatch) => {
   dispatch(softwareApplicationSlice.actions.clearAllErrors());
 };
 
