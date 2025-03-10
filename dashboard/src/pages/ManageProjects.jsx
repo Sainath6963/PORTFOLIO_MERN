@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -29,20 +28,20 @@ import { toast } from "react-toastify";
 
 function ManageProjects() {
   const navigateTo = useNavigate();
-  const handleReturnToDashboard = () => {
-    navigateTo("/");
-  };
+  const dispatch = useDispatch();
 
   const { projects, loading, error, message } = useSelector(
     (state) => state.Projects
   );
 
-  const dispatch = useDispatch();
-  const handleProjectDelete = (id) => {
-    dispatch(deleteProject(id));
+  const handleProjectDelete = async (id) => {
+    await dispatch(deleteProject(id));
+    dispatch(getAllProject()); // ✅ Ensure project list refreshes
   };
 
   useEffect(() => {
+    dispatch(getAllProject()); // ✅ Fetch projects on mount
+
     if (error) {
       toast.error(error);
       dispatch(clearAllProjectErrors());
@@ -50,131 +49,99 @@ function ManageProjects() {
     if (message) {
       toast.success(message);
       dispatch(resetProjectSlice());
-      dispatch(getAllProject());
+      dispatch(getAllProject()); // ✅ Refresh list after deletion
     }
-  }, [dispatch, error, loading, message]);
+  }, [dispatch, error, message]);
+
   return (
-    <>
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
-        <Tabs defaultValue="week">
-          <TabsContent value="week">
-            <Card>
-              <CardHeader className="flex gap-4 sm:justify-between sm:flex-row sm:items-center">
-                <CardTitle>Manage Your Projects</CardTitle>
-                <Button className="w-fit" onClick={handleReturnToDashboard}>
-                  Return to Dashboard
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Banner</TableHead>
-                      <TableHead>Title</TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Stack
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Deployed
-                      </TableHead>
-                      <TableHead className="md:table-cell">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {projects && projects.length > 0 ? (
-                      projects.map((element) => {
-                        return (
-                          <TableRow className="bg-accent" key={element._id}>
-                            <TableCell>
-                              <div className="font-medium">
-                                <img
-                                  src={
-                                    element.projectBanner &&
-                                    element.projectBanner.url
-                                  }
-                                  alt={element.title}
-                                  className="w-16 h-16"
-                                />
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="font-medium">{element.title}</div>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                              {element.stack}
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell">
-                              {element.deployed}
-                            </TableCell>
-                            <TableCell className="flex flex-row items-center gap-3 h-24">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Link to={`/view/project/${element._id}`}>
-                                      <Button
-                                        className="border-green-600 border-2 rounded-full h-8 w-8 flex 
-                                      justify-center items-center text-green-600  hover:text-slate-950 
-                                      hover:bg-green-600"
-                                      >
-                                        <Eye className="h-5 w-5" />
-                                      </Button>
-                                    </Link>
-                                  </TooltipTrigger>
-                                  <TooltipContent side="bottom">
-                                    View
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Link to={`/update/project/${element._id}`}>
-                                      <button className="border-yellow-400 border-2 rounded-full h-8 w-8 flex justify-center items-center text-yellow-400  hover:text-slate-950 hover:bg-yellow-400">
-                                        <Pen className="h-5 w-5" />
-                                      </button>
-                                    </Link>
-                                  </TooltipTrigger>
-                                  <TooltipContent side="bottom">
-                                    Edit
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      className="border-red-600 border-2 rounded-full h-8 w-8 flex justify-center items-center text-red-600  hover:text-slate-50 hover:bg-red-600"
-                                      onClick={() =>
-                                        handleProjectDelete(element._id)
-                                      }
-                                    >
-                                      <Trash2 className="h-5 w-5" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent side="bottom">
-                                    Delete
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                    ) : (
-                      <TableRow>
-                        <TableCell className="text-2xl">
-                          You have not added any project.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <Card>
+        <CardHeader className="flex gap-4 sm:justify-between sm:flex-row sm:items-center">
+          <CardTitle>Manage Your Projects</CardTitle>
+          <Button onClick={() => navigateTo("/")}>Return to Dashboard</Button>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Banner</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead className="hidden md:table-cell">Stack</TableHead>
+                <TableHead className="hidden md:table-cell">Deployed</TableHead>
+                <TableHead className="md:table-cell">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {projects?.length > 0 ? (
+                projects.map((project) => (
+                  <TableRow key={project._id} className="bg-accent">
+                    <TableCell>
+                      <img
+                        src={project.projectBanner?.url}
+                        alt={project.title}
+                        className="w-16 h-16"
+                      />
+                    </TableCell>
+                    <TableCell>{project.title}</TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {project.stack}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {project.deployed ? "Yes" : "No"}
+                    </TableCell>
+                    <TableCell className="flex gap-3">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Link to={`/view/project/${project._id}`}>
+                              <Button className="border-green-600 border-2 rounded-full h-8 w-8 text-green-600 hover:text-white hover:bg-green-600">
+                                <Eye className="h-5 w-5" />
+                              </Button>
+                            </Link>
+                          </TooltipTrigger>
+                          <TooltipContent>View</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Link to={`/update/project/${project._id}`}>
+                              <Button className="border-yellow-400 border-2 rounded-full h-8 w-8 text-yellow-400 hover:text-black hover:bg-yellow-400">
+                                <Pen className="h-5 w-5" />
+                              </Button>
+                            </Link>
+                          </TooltipTrigger>
+                          <TooltipContent>Edit</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              className="border-red-600 border-2 rounded-full h-8 w-8 text-red-600 hover:text-white hover:bg-red-600"
+                              onClick={() => handleProjectDelete(project._id)}
+                            >
+                              <Trash2 className="h-5 w-5" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Delete</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-2xl">
+                    No projects added.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

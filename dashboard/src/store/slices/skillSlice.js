@@ -87,7 +87,7 @@ export const getAllSkills = () => async (dispatch) => {
   dispatch(skillSlice.actions.getAllSkillRequest());
   try {
     const { data } = await axios.get(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/Skill/getAll",
+      "http://localhost:4000/api/v1/Skill/getAll",
       {
         withCredentials: true,
       }
@@ -103,7 +103,7 @@ export const addNewSkill = (data) => async (dispatch) => {
   dispatch(skillSlice.actions.addNewSkillRequest());
   try {
     const response = await axios.post(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/Skill/add",
+      "http://localhost:4000/api/v1/Skill/add",
       data,
       {
         withCredentials: true,
@@ -123,7 +123,7 @@ export const updateSkill = (id, proficiency) => async (dispatch) => {
   dispatch(skillSlice.actions.updateSkillRequest());
   try {
     const { data } = await axios.put(
-      `https://new-backend-portfolio-railway.onrender.com/api/v1/Skill/update/${id}`,
+      `http://localhost:4000/api/v1/Skill/update/${id}`,
       { proficiency },
       { withCredentials: true, headers: { "Content-Type": "application/json" } }
     );
@@ -138,7 +138,7 @@ export const deleteSkill = (id) => async (dispatch) => {
   dispatch(skillSlice.actions.deleteSkillRequest());
   try {
     const response = await axios.delete(
-      `https://new-backend-portfolio-railway.onrender.com/api/v1/Skill/delete/${id}`,
+      `http://localhost:4000/api/v1/Skill/delete/${id}`,
       {
         withCredentials: true,
       }

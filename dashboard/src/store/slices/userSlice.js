@@ -114,7 +114,7 @@ export const login = (email, password) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
     const { data } = await axios.post(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/login",
+      "http://localhost:4000/api/v1/user/login",
       { email, password },
       { withCredentials: true, headers: { "content-type": "application/json" } }
     );
@@ -128,7 +128,7 @@ export const getUser = () => async (dispatch) => {
   dispatch(userSlice.actions.loadUserRequest());
   try {
     const { data } = await axios.get(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/me",
+      "http://localhost:4000/api/v1/user/me",
 
       { withCredentials: true }
     );
@@ -141,7 +141,7 @@ export const getUser = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     const { data } = await axios.get(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/logout",
+      "http://localhost:4000/api/v1/user/logout",
 
       { withCredentials: true }
     );
@@ -154,21 +154,24 @@ export const logout = () => async (dispatch) => {
 
 export const updatePassword =
   (currentPassword, newPassword, confirmPassword) => async (dispatch) => {
-    dispatch(userSlice.actions.updatePasswordRequest());
     try {
+      dispatch(userSlice.actions.updatePasswordRequest());
+
       const { data } = await axios.put(
-        "https://new-backend-portfolio-railway.onrender.com/api/v1/user/update/password",
+        "http://localhost:4000/api/v1/user/update/password",
         { currentPassword, newPassword, confirmPassword },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+
       dispatch(userSlice.actions.updatePasswordSuccess(data.message));
-      dispatch(userSlice.actions.clearAllErrors());
     } catch (error) {
       dispatch(
-        userSlice.actions.updatePasswordFailed(error.response.data.message)
+        userSlice.actions.updatePasswordFailed(
+          error.response?.data?.message || "An error occurred"
+        )
       );
     }
   };
@@ -177,7 +180,7 @@ export const updateProfile = (data) => async (dispatch) => {
   dispatch(userSlice.actions.updateProfileRequest());
   try {
     const response = await axios.put(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/update/me",
+      "http://localhost:4000/api/v1/user/update/me",
       data,
       {
         withCredentials: true,

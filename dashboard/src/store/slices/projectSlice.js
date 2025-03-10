@@ -88,7 +88,7 @@ export const getAllProject = () => async (dispatch) => {
   dispatch(projectSlice.actions.getAllProjectRequest());
   try {
     const response = await axios.get(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/projects/getAll",
+      "http://localhost:4000/api/v1/projects/getAll",
       {
         withCredentials: true,
       }
@@ -104,7 +104,7 @@ export const addNewProject = (projectData) => async (dispatch) => {
   dispatch(projectSlice.actions.addNewProjectRequest());
   try {
     const response = await axios.post(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/projects/add",
+      "http://localhost:4000/api/v1/projects/add",
       projectData,
       {
         withCredentials: true,
@@ -124,7 +124,7 @@ export const deleteProject = (id) => async (dispatch) => {
   dispatch(projectSlice.actions.deleteProjectRequest());
   try {
     const response = await axios.delete(
-      `https://new-backend-portfolio-railway.onrender.com/api/v1/projects/delete/${id}`,
+      `http://localhost:4000/api/v1/projects/delete/${id}`,
       { withCredentials: true }
     );
     dispatch(projectSlice.actions.deleteProjectSuccess());
@@ -140,7 +140,7 @@ export const updateProject = (id, newData) => async (dispatch) => {
   dispatch(projectSlice.actions.updateProjectRequest());
   try {
     const response = await axios.put(
-      `https://new-backend-portfolio-railway.onrender.com/api/v1/projects/update/${id}`,
+      `http://localhost:4000/api/v1/projects/update/${id}`,
       newData,
       {
         withCredentials: true,

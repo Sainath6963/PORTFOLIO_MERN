@@ -76,7 +76,7 @@ export const getAllSoftwareApplications = () => async (dispatch) => {
   );
   try {
     const response = await axios.get(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/softwareApplications/getallApplications",
+      "http://localhost:4000/api/v1/softwareApplications/getallApplications",
       { withCredentials: true }
     );
     dispatch(
@@ -98,7 +98,7 @@ export const addNewSoftwareApplication = (data) => async (dispatch) => {
   dispatch(softwareApplicationSlice.actions.addNewsoftwareApplicationRequest());
   try {
     const response = await axios.post(
-      "https://new-backend-portfolio-railway.onrender.com/api/v1/softwareApplications/addApplications",
+      "http://localhost:4000/api/v1/softwareApplications/addApplications",
       data,
       {
         withCredentials: true,
@@ -126,7 +126,7 @@ export const deleteSoftwareApplication = (id) => async (dispatch) => {
   );
   try {
     const response = await axios.delete(
-      `https://new-backend-portfolio-railway.onrender.com/api/v1/softwareApplications/deleteApplications/${id}`,
+      `http://localhost:4000/api/v1/softwareApplications/deleteApplications/${id}`,
       { withCredentials: true }
     );
     dispatch(

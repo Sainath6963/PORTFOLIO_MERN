@@ -25,16 +25,18 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevent default form submission
     dispatch(login(email, password));
   };
 
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllUserError);
+      dispatch(clearAllUserError()); // Fixed missing ()
     }
     if (isAuthenticated) {
+      toast.success("Login");
       navigateTo("/");
     }
   }, [dispatch, isAuthenticated, error, loading]);

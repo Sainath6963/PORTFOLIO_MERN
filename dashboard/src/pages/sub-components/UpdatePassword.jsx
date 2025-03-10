@@ -12,13 +12,21 @@ import {
 import SpecialLoadingButton from "./SpecialLoadingButton";
 
 const UpdatePassword = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [formData, setFormData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
+  const { currentPassword, newPassword, confirmNewPassword } = formData;
   const { loading, isAuthenticated, error, message, isUpdated } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleUpdatePassword = () => {
     dispatch(updatePassword(currentPassword, newPassword, confirmNewPassword));
@@ -27,7 +35,7 @@ const UpdatePassword = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-      clearAllUserError();
+      dispatch(clearAllUserError());
     }
     if (isUpdated) {
       dispatch(resetProfile());
@@ -35,58 +43,55 @@ const UpdatePassword = () => {
     if (message) {
       toast.success(message);
     }
-  }, [dispatch, isAuthenticated, error, message]);
+  }, [dispatch, isAuthenticated, error, message, isUpdated]);
+
   return (
-    <>
-      <div className="w-full h-full">
-        <div>
-          <div className="grid w-[100%] gap-6">
-            <div className="grid gap-2">
-              <h1 className="text-3xl font-bold">Update Password</h1>
-              <p className="text-balance text-muted-foreground">
-                Update Your Password
-              </p>
-            </div>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label>Current Password</Label>
-                <Input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>New Password</Label>
-                <Input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>Confirm New Password</Label>
-                <Input
-                  type="password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
-              </div>
-              {!loading ? (
-                <Button
-                  onClick={() => handleUpdatePassword()}
-                  className="w-full"
-                >
-                  Update Password
-                </Button>
-              ) : (
-                <SpecialLoadingButton content={"Updating Password"} />
-              )}
-            </div>
+    <div className="w-full h-full">
+      <div className="grid w-[100%] gap-6">
+        <div className="grid gap-2">
+          <h1 className="text-3xl font-bold">Update Password</h1>
+          <p className="text-balance text-muted-foreground">
+            Update Your Password
+          </p>
+        </div>
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label>Current Password</Label>
+            <Input
+              type="password"
+              name="currentPassword"
+              value={currentPassword}
+              onChange={handleChange}
+            />
           </div>
+          <div className="grid gap-2">
+            <Label>New Password</Label>
+            <Input
+              type="password"
+              name="newPassword"
+              value={newPassword}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label>Confirm New Password</Label>
+            <Input
+              type="password"
+              name="confirmNewPassword"
+              value={confirmNewPassword}
+              onChange={handleChange}
+            />
+          </div>
+          {!loading ? (
+            <Button onClick={handleUpdatePassword} className="w-full">
+              Update Password
+            </Button>
+          ) : (
+            <SpecialLoadingButton content={"Updating Password"} />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
