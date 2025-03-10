@@ -114,7 +114,7 @@ export const login = (email, password) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
     const { data } = await axios.post(
-      "http://localhost:4000/api/v1/user/login",
+      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/login",
       { email, password },
       { withCredentials: true, headers: { "content-type": "application/json" } }
     );
@@ -128,7 +128,7 @@ export const getUser = () => async (dispatch) => {
   dispatch(userSlice.actions.loadUserRequest());
   try {
     const { data } = await axios.get(
-      "http://localhost:4000/api/v1/user/me",
+      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/me",
 
       { withCredentials: true }
     );
@@ -141,7 +141,7 @@ export const getUser = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     const { data } = await axios.get(
-      "http://localhost:4000/api/v1/user/logout",
+      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/logout",
 
       { withCredentials: true }
     );
@@ -157,7 +157,7 @@ export const updatePassword =
     dispatch(userSlice.actions.updatePasswordRequest());
     try {
       const { data } = await axios.put(
-        "http://localhost:4000/api/v1/user/update/password",
+        "https://new-backend-portfolio-railway.onrender.com/api/v1/user/update/password",
         { currentPassword, newPassword, confirmPassword },
         {
           withCredentials: true,
@@ -177,7 +177,7 @@ export const updateProfile = (data) => async (dispatch) => {
   dispatch(userSlice.actions.updateProfileRequest());
   try {
     const response = await axios.put(
-      "http://localhost:4000/api/v1/user/update/me",
+      "https://new-backend-portfolio-railway.onrender.com/api/v1/user/update/me",
       data,
       {
         withCredentials: true,
