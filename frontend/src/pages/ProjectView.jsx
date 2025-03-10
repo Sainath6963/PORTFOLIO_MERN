@@ -18,37 +18,40 @@ const ProjectView = () => {
 
   useEffect(() => {
     const getProject = async () => {
-      await axios
-        .get(
+      try {
+        const res = await axios.get(
           `https://render-backend-qy70.onrender.com/api/v1/projects/getSingle/${id}`,
           {
             withCredentials: true,
           }
-        )
-        .then((res) => {
-          setTitle(res.data.project.title);
-          setDescription(res.data.project.description);
-          setStack(res.data.project.stack);
-          setDeployed(res.data.project.deployed);
-          setTechnologies(res.data.project.technologies);
-          setGitRepoLink(res.data.project.gitRepoLink);
-          setProjectLink(res.data.project.projectLink);
-          setProjectBanner(
-            res.data.project.projectBanner && res.data.project.projectBanner.url
-          );
-          setProjectBannerPreview(
-            res.data.project.projectBanner && res.data.project.projectBanner.url
-          );
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
+        );
+        setTitle(res.data.project.title || "Untitled Project");
+        setDescription(
+          res.data.project.description || "No description available."
+        );
+        setStack(res.data.project.stack || "No stack information.");
+        setTechnologies(
+          res.data.project.technologies || "No technologies listed."
+        );
+        setGitRepoLink(res.data.project.gitRepoLink || "#");
+        setProjectLink(res.data.project.projectLink || "#");
+        setProjectBanner(
+          res.data.project.projectBanner?.url || "/avatarHolder.jpg"
+        );
+        setProjectBannerPreview(
+          res.data.project.projectBanner?.url || "/avatarHolder.jpg"
+        );
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "An error occurred, please try again.";
+        toast.error(errorMessage);
+      }
     };
     getProject();
   }, [id]);
 
-  const descriptionList = description.split(". ");
-  const technologiesList = technologies.split(", ");
+  const descriptionList = description ? description.split(", ") : [];
 
   const navigateTo = useNavigate();
   const handleReturnToPortfolio = () => {
@@ -56,79 +59,60 @@ const ProjectView = () => {
   };
 
   return (
-    <>
-      <div className="flex mt-7 justify-center items-center min-h-[100vh] sm:gap-4 sm:py-4">
-        <div className="w-[100%] px-5 md:w-[1000px] pb-5">
-          <div className="space-y-12">
-            <div className="border-b border-gray-900/10 pb-12">
-              <div className="flex justify-end">
-                <Button onClick={handleReturnToPortfolio}>
-                  Return to Portfolio
-                </Button>
+    <div className="flex mt-7 justify-center items-center min-h-[100vh] sm:gap-4 sm:py-4">
+      <div className="w-[100%] px-5 md:w-[1000px] pb-5">
+        <div className="space-y-12">
+          <div className="border-b border-gray-900/10 pb-12">
+            <div className="flex justify-end">
+              <Button onClick={handleReturnToPortfolio}>
+                Return to Portfolio
+              </Button>
+            </div>
+            <div className="mt-10 flex flex-col gap-5">
+              <div className="w-full sm:col-span-4">
+                <h1 className="text-2xl font-bold mb-4">{title}</h1>
+                <img
+                  src={projectBannerPreview || "/avatarHolder.jpg"}
+                  alt="projectBanner"
+                  className="w-full h-auto"
+                />
               </div>
-              <div className="mt-10 flex flex-col gap-5">
-                <div className="w-full sm:col-span-4">
-                  <h1 className="text-2xl font-bold mb-4">{title}</h1>
-                  <img
-                    src={
-                      projectBannerPreview
-                        ? projectBannerPreview
-                        : "/avatarHolder.jpg"
-                    }
-                    alt="projectBanner"
-                    className="w-full h-auto"
-                  />
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Description:</p>
-                  <ul className="list-disc">
-                    {descriptionList.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Technologies:</p>
-                  <ul className="list-disc">
-                    {technologiesList.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Stack:</p>
-                  <p>{stack}</p>
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Deployed:</p>
-                  <p>{deployed}</p>
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Github Repository Link:</p>
-                  <Link
-                    className="text-sky-700"
-                    target="_blank"
-                    to={gitRepoLink}
-                  >
-                    {gitRepoLink}
-                  </Link>
-                </div>
-                <div className="w-full sm:col-span-4">
-                  <p className="text-2xl mb-2">Project Link:</p>
-                  <Link
-                    className="text-sky-700"
-                    target="_blank"
-                    to={projectLink}
-                  >
-                    {projectLink}
-                  </Link>
-                </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Description:</p>
+                <ul className="list-disc">
+                  {descriptionList.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Technologies:</p>
+              </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Stack:</p>
+                <p>{stack}</p>
+              </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Deployed:</p>
+                <p>{deployed}</p>
+              </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Github Repository Link:</p>
+                <Link className="text-sky-700" target="_blank" to={gitRepoLink}>
+                  {gitRepoLink}
+                </Link>
+              </div>
+              <div className="w-full sm:col-span-4">
+                <p className="text-2xl mb-2">Project Link:</p>
+                <Link className="text-sky-700" target="_blank" to={projectLink}>
+                  {projectLink}
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
