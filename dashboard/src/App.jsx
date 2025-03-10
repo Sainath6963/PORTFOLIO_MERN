@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import HomePage from "@/pages/HomePage.jsx";
 import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
 import ManageSkills from "./pages/ManageSkills";
 import ManageTimeLine from "./pages/ManageTimeLine";
 import ManageProjects from "./pages/ManageProjects";
 import ViewProjects from "./pages/ViewProjects";
-import UpdateProjects from "./pages/updateProjects";
+import UpdateProjects from "@/pages/UpdateProjects";
 import ResetPassword from "./pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
